@@ -1,0 +1,51 @@
+{
+    "files.watcherExclude": {
+        "**/.git/objects/**": true,
+        "**/.git/subtree-cache/**": true,
+        "**/node_modules/**": true,
+        "**/vendor/**": true,
+        "**/var/**": true
+    },
+    "git.autofetch": true,
+    "typescript.updateImportsOnFileMove.enabled": "always",
+    "eslint.validate": [
+        "vue",
+        "javascript",
+        "typescript",
+    ],
+    "window.newWindowDimensions": "maximized",
+    "window.zoomLevel": 0,
+    "javascript.updateImportsOnFileMove.enabled": "always",
+    "breadcrumbs.enabled": true,
+    "explorer.confirmDelete": false,
+    "files.eol": "\n",
+    "workbench.iconTheme": "vscode-icons",
+    "workbench.colorTheme": "One Dark Pro",
+    "explorer.confirmDragAndDrop": false,
+    "explorer.autoReveal": false,
+    "gitlens.views.repositories.autoReveal": false,
+    "workbench.panel.defaultLocation": "right",
+    "gitlens.defaultDateFormat": "Do MMMM YYYY HH:mm",
+    "eslint.alwaysShowStatus": true,
+    "[javascript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[vue]": {
+        "editor.defaultFormatter": "octref.vetur"
+    },
+    "vetur.format.defaultFormatter.html": "prettier",
+    "[typescript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[json]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[jsonc]": {
+        "editor.defaultFormatter": "vscode.json-language-features"
+    },
+    "php.suggest.basic": false,
+    "oneDarkPro.bold": true,
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": true
+    }
+}
