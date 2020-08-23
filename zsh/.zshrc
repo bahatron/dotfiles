@@ -33,6 +33,8 @@ export GPG_TTY=$(tty)
 alias dcc="docker-compose"
 alias dce="docker-compose exec"
 alias dcr="docker-compose run"
+alias dps="docker ps"
+alias dprune="docker system prune -a -f"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
