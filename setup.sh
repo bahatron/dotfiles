@@ -2,7 +2,7 @@
 BASEDIR=$(dirname "$0")
 
 sudo add-apt-repository ppa:linuxuprising/guake
-curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
+curl -sL https://deb.nodesource.com/setup_16.x | sudo -E bash -
 sudo apt-get update
 sudo apt-get install nodejs zsh curl git guake -y
 
@@ -43,6 +43,3 @@ echo "================================================ Tilt installed!"
 cp -rf ${BASEDIR:-.}/zsh/.p10k.zsh ~/.p10k.zsh
 cp -rf ${BASEDIR:-.}/zsh/.bashrc ~/.bashrc
 cp -rf ${BASEDIR:-.}/zsh/.zshrc ~/.zshrc
-
-mkdir ~/.config/Code && mkdir ~/.config/Code/User
-cp -rf ${BASEDIR:-.}/vscode/* ~/.config/Code/User
