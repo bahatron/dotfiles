@@ -9,7 +9,7 @@ notify "Installing dependencies..."
 sudo add-apt-repository ppa:linuxuprising/guake
 curl -sL https://deb.nodesource.com/setup_16.x | sudo -E bash -
 sudo apt-get update
-sudo apt-get install nodejs zsh curl git guake -y
+sudo apt-get install nodejs zsh curl git guake htop -y
 notify "Dependencies installed!"
 sleep 3
 
