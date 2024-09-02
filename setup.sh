@@ -8,6 +8,7 @@ notify() {
 notify "Installing dependencies..."
 sudo apt-get update
 sudo apt-get install zsh curl git guake htop -y
+wget -q -O- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash
 notify "Dependencies installed!"
 sleep 3
 
