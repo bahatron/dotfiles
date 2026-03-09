@@ -6,8 +6,9 @@ notify() {
 }
 
 notify "Installing dependencies..."
+curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -
 sudo apt-get update
-sudo apt-get install zsh curl git guake htop -y
+sudo apt-get install zsh curl git guake htop nodejs -y
 wget -q -O- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash
 notify "Dependencies installed!"
 sleep 3
