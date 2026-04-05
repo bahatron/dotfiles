@@ -6,9 +6,9 @@ notify() {
 }
 
 notify "Installing dependencies..."
-curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -
+# curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -
 sudo apt-get update
-sudo apt-get install zsh curl git guake htop nodejs -y
+sudo apt-get install zsh curl git guake htop -y # nodejs
 wget -q -O- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash
 notify "Dependencies installed!"
 sleep 3
@@ -20,9 +20,8 @@ git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$
 notify "ZSH installed!"
 sleep 3
 
-## CP config files
-## TODO: use symlinks (ln -s) to keep files up to date
-cp -rf ${BASEDIR:-.}/files/.p10k.zsh ~/.p10k.zsh
-cp -rf ${BASEDIR:-.}/files/.bashrc ~/.bashrc
-cp -rf ${BASEDIR:-.}/files/.zshrc ~/.zshrc
+## Symlink config files to keep them up to date
+ln -sf ${BASEDIR:-.}/files/.p10k.zsh ~/.p10k.zsh
+ln -sf ${BASEDIR:-.}/files/.bashrc ~/.bashrc
+ln -sf ${BASEDIR:-.}/files/.zshrc ~/.zshrc
 cp -rf ${BASEDIR:-.}/files/.bash_aliases ~/.bash_aliases

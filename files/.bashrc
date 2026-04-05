@@ -2,6 +2,10 @@
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
 
+# Load nvm before the interactive check so GUI apps (e.g. GitKraken) can find node
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+
 # If not running interactively, don't do anything
 case $- in
     *i*) ;;
