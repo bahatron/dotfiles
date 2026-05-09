@@ -1,5 +1,5 @@
 #!/bin/sh
-BASEDIR=$(dirname "$0")
+BASEDIR=$(cd "$(dirname "$0")" && pwd)
 
 notify() {
     echo "================================================ ${1}"
@@ -21,7 +21,7 @@ notify "ZSH installed!"
 sleep 3
 
 ## Symlink config files to keep them up to date
-ln -sf ${BASEDIR:-.}/files/.p10k.zsh ~/.p10k.zsh
-ln -sf ${BASEDIR:-.}/files/.bashrc ~/.bashrc
-ln -sf ${BASEDIR:-.}/files/.zshrc ~/.zshrc
+ln -sf "${BASEDIR}/files/.p10k.zsh" ~/.p10k.zsh
+ln -sf "${BASEDIR}/files/.bashrc" ~/.bashrc
+ln -sf "${BASEDIR}/files/.zshrc" ~/.zshrc
 cp -rf ${BASEDIR:-.}/files/.bash_aliases ~/.bash_aliases
