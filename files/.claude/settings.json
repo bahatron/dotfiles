@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "defaultMode": "bypassPermissions"
+  },
+  "alwaysThinkingEnabled": true,
+  "ultracode": true,
+  "skipDangerousModePermissionPrompt": true,
+  "skipWorkflowUsageWarning": true,
+  "theme": "dark",
+  "switchModelsOnFlag": true,
+  "tui": "fullscreen",
+  "effortLevel": "max"
+}

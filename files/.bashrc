@@ -122,3 +122,4 @@ fi
 
 # start zsh
 exec zsh
+. "$HOME/snap/code/241/.local/share/../bin/env"

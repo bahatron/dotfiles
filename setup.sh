@@ -39,3 +39,10 @@ ln -sf "${BASEDIR}/files/.p10k.zsh" ~/.p10k.zsh
 ln -sf "${BASEDIR}/files/.bashrc" ~/.bashrc
 ln -sf "${BASEDIR}/files/.zshrc" ~/.zshrc
 cp -rf ${BASEDIR:-.}/files/.bash_aliases ~/.bash_aliases
+
+## Claude Code: symlink tracked config only; installation state stays local
+mkdir -p ~/.claude
+ln -sf "${BASEDIR}/files/.claude/CLAUDE.md" ~/.claude/CLAUDE.md
+ln -sf "${BASEDIR}/files/.claude/settings.json" ~/.claude/settings.json
+rm -rf ~/.claude/skills
+ln -sf "${BASEDIR}/files/.claude/skills" ~/.claude/skills
