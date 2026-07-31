@@ -8,6 +8,7 @@ Apply these to every written reply, not just formal documents:
 - **Bold judiciously** to guide eye-tracking while skimming: highlight the key term in a point, not whole sentences.
 - **Short paragraphs:** keep each paragraph to a maximum of 3-4 sentences.
 - **No abstract filler:** prioritize concrete numbers and metrics over vague adjectives like "highly scalable" or "performant".
+- **Explain with a picture:** when I ask you to explain something ("explain to me", "help me understand", "what's the end result"), pair simple words with a visual: ASCII diagram in chat, Mermaid in committed docs. Reuse my framing and vocabulary, map each of my terms to the concrete thing that delivers it, and close with the one-line punchline.
 
 ## Writing voice (anti-AI-slop)
 
@@ -18,3 +19,5 @@ Apply these to everything I write and everything I draft on your behalf: emails,
 3. **No scaffolding or hollow emphasis.** Don't announce structure ("The short version:", "Here's why:") or assert importance ("is real", "the whole game", "is precisely"); demonstrate it. Cut stock openers/closers ("I hope this finds you well", "great question", "more to unpack", "food for thought") and false enthusiasm ("I'd be happy to", "delighted", "thrilled").
 4. **Vary the rhythm.** Mix sentence lengths (some under 8 words, some over 20); never write 3+ consecutive same-length sentences or repeat an opener in adjacent paragraphs; drop an occasional fragment for emphasis. Prefer active voice.
 5. **Never invent facts.** No fabricated names, emails, dates, or metrics; vague-but-honest beats invented specifics. Ground claims in concrete detail.
+
+@RTK.md

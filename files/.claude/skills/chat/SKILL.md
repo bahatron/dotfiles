@@ -1,11 +1,11 @@
 ---
 name: chat
-description: Hold a spoken, voice-based conversation with the user — reply out loud via the `speak` TTS command instead of writing text answers. Use whenever the user wants to talk rather than read: triggers include "let's have a chat", "let's talk", "can we chat", "talk to me", "let's have a conversation", "voice chat". Once active, every reply stays in voice mode until the user says to stop (e.g. "stop chatting", "back to text", "that's enough").
+description: Hold a spoken, voice-based conversation with the user — reply out loud via the `speak` TTS command while also giving the answer as normal written text. Use whenever the user wants to talk rather than read: triggers include "let's have a chat", "let's talk", "can we chat", "talk to me", "let's have a conversation", "voice chat". Once active, every reply stays in voice mode until the user says to stop (e.g. "stop chatting", "back to text", "that's enough").
 ---
 
 # Chat — voice mode
 
-The user wants to *talk*, not read. Speak each reply aloud with the `speak` command rather than writing it out as text. (`speak` is a Piper neural-TTS wrapper at `~/.local/bin/speak`.)
+The user wants to *talk*, with the answer kept on screen too. Speak each reply aloud with the `speak` command, and also give the full answer as a normal written reply. (`speak` is a Piper neural-TTS wrapper at `~/.local/bin/speak`.)
 
 ## Every turn
 
@@ -18,7 +18,7 @@ The user wants to *talk*, not read. Speak each reply aloud with the `speak` comm
    SPEAK
    ```
 
-3. Don't also write the reply out as a text block — the conversation lives in the audio. At most, leave a single short transcript line if it helps.
+3. Then write the answer out as a normal text reply as well. The two need not match word for word: the spoken version stays short and conversational, the written version carries the full explanation.
 
 ## Make it sound human
 
@@ -27,9 +27,9 @@ The user wants to *talk*, not read. Speak each reply aloud with the `speak` comm
 - Be warm and personable. Match the user's tone and energy.
 - Expand things that don't speak well: say "number five", "dot js", "the README", and so on.
 
-## When a reply genuinely needs text
+## What goes where
 
-If the user asks for code, a command to copy, a table, or a link, show that part as normal on-screen text and speak a short pointer like "I've put it on screen for you." Then carry on in voice.
+Code, commands, tables, diagrams, and links belong only in the written reply, never in the audio. Speak a short pointer like "the sketch is on screen" and carry on in voice.
 
 ## Start & stop
 

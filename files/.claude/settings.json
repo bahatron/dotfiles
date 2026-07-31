@@ -2,12 +2,48 @@
   "permissions": {
     "defaultMode": "bypassPermissions"
   },
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"/home/bahatron/.claude/hooks/context-mode-cache-heal.mjs\""
+          }
+        ]
+      }
+    ]
+  },
+  "enabledPlugins": {
+    "rtk-plugin@enix": true,
+    "context-mode@context-mode": false
+  },
+  "extraKnownMarketplaces": {
+    "claude-for-legal": {
+      "source": {
+        "source": "git",
+        "url": "https://github.com/anthropics/claude-for-legal.git"
+      }
+    },
+    "enix": {
+      "source": {
+        "source": "github",
+        "repo": "enixCode/plugins"
+      }
+    },
+    "context-mode": {
+      "source": {
+        "source": "github",
+        "repo": "mksglu/context-mode"
+      }
+    }
+  },
   "alwaysThinkingEnabled": true,
-  "ultracode": true,
+  "effortLevel": "xhigh",
+  "ultracode": false,
+  "tui": "fullscreen",
   "skipDangerousModePermissionPrompt": true,
   "skipWorkflowUsageWarning": true,
   "theme": "dark",
-  "switchModelsOnFlag": true,
-  "tui": "fullscreen",
-  "effortLevel": "max"
+  "switchModelsOnFlag": false
 }
