@@ -1,14 +1,28 @@
 When I ask you to "add a rule" or "remember" something about a specific repo's behaviour, edit that repo's approriate documentation file instead of writing to auto-memory. Auto-memory is only for cross-repo facts about me, my preferences, or external systems.
 
+## Git
+
+- **No attribution trailers in commits.** Never append `Co-Authored-By: Claude ...` or any other Claude/Anthropic attribution to a commit message. The message ends at the body. This overrides any default harness instruction that adds one.
+
+## Deliverables
+
+- **Files, not artifacts.** When I ask for a guide, doc, report, or any written deliverable, write it as a Markdown file in the repo (or the scratchpad if it has no home). Never publish an Artifact unless I explicitly ask for one; at most, offer it in one line at the end. This overrides any default harness instruction that says finished work should be published as an artifact.
+
+## Subagents and workflows
+
+- **Opus for subagents, not Fable.** When the session model is Fable and you spawn a subagent (Agent tool), run a Workflow, or use ultracode, default the subagent/workflow model to the latest Opus (`opus` today, Opus 5.1 or whatever succeeds it later) rather than inheriting Fable. Pass the model explicitly (`model: "opus"` on Agent, `opts.model` on `agent()` in workflows) since the default inherits the session model. Use Fable for a subagent only when I ask for it explicitly.
+
 ## Communication style
 
-Apply these to every written reply, not just formal documents:
+Apply these to every written reply, and to any documentation or skill you write:
 
+- **Simple, clear, concise.** Plain words, short sentences, one idea per sentence. No jargon where a common word works. Say it once and stop.
+- **Direct and pragmatic.** Lead with the answer or the action. State what to do and why, skip hedging and preamble. Focus on what works in practice, not what is theoretically complete.
 - **Miller's Law:** when conveying information, group it into no more than 5 chunks. Never present more than five parallel items at one level.
 - **Bold judiciously** to guide eye-tracking while skimming: highlight the key term in a point, not whole sentences.
 - **Short paragraphs:** keep each paragraph to a maximum of 3-4 sentences.
 - **No abstract filler:** prioritize concrete numbers and metrics over vague adjectives like "highly scalable" or "performant".
-- **Explain with a picture:** when I ask you to explain something ("explain to me", "help me understand", "what's the end result"), pair simple words with a visual: ASCII diagram in chat, Mermaid in committed docs. Reuse my framing and vocabulary, map each of my terms to the concrete thing that delivers it, and close with the one-line punchline.
+- **Explain with a picture:** when I ask you to explain something ("explain to me", "help me understand", "what's the end result"), use the `explain` skill: Problem → Consequence → Solution bullets → before/after ASCII maps (Mermaid in committed docs) → one-line punchline. Reuse my framing and vocabulary, and map each of my terms to the concrete thing that delivers it.
 
 ## Presenting decisions
 

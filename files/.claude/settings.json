@@ -15,10 +15,12 @@
   },
   "effortLevel": "max",
   "alwaysThinkingEnabled": true,
-  "ultracode": false,
+  "ultracode": true,
   "tui": "fullscreen",
   "skipDangerousModePermissionPrompt": true,
   "skipWorkflowUsageWarning": true,
   "theme": "dark",
-  "switchModelsOnFlag": false
+  "switchModelsOnFlag": false,
+  "remoteControlAtStartup": false,
+  "model": "claude-fable-5[1m]"
 }
