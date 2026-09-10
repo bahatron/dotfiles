@@ -46,3 +46,28 @@ ln -sf "${BASEDIR}/files/.claude/CLAUDE.md" ~/.claude/CLAUDE.md
 ln -sf "${BASEDIR}/files/.claude/settings.json" ~/.claude/settings.json
 rm -rf ~/.claude/skills
 ln -sf "${BASEDIR}/files/.claude/skills" ~/.claude/skills
+## Headroom: local context-compression proxy for Claude Code + Codex.
+## Runs as systemd user unit "headroom-default" on 127.0.0.1:8787. Both VS Code
+## extensions read the same files it edits (~/.claude/settings.json, ~/.codex/config.toml).
+notify "Installing Headroom..."
+# uv with explicit dirs: VS Code's snap remaps XDG_DATA_HOME, which sends installers to ~/snap/code/<rev>/.
+curl -LsSf https://astral.sh/uv/install.sh | UV_INSTALL_DIR="$HOME/.local/bin" UV_NO_MODIFY_PATH=1 sh
+export PATH="$HOME/.local/bin:$PATH"
+UV_TOOL_DIR="$HOME/.local/share/uv/tools" UV_TOOL_BIN_DIR="$HOME/.local/bin" \
+UV_PYTHON_INSTALL_DIR="$HOME/.local/share/uv/python" UV_CACHE_DIR="$HOME/.cache/uv" \
+  uv tool install --python 3.13 "headroom-ai[all]"
+# --scope provider: env.ANTHROPIC_BASE_URL in settings.json + [model_providers.headroom] in config.toml.
+# Targets are explicit because Codex is only bundled inside the VS Code extension (not on PATH).
+env -u XDG_DATA_HOME headroom install apply --preset persistent-service --scope provider \
+  --providers manual --target claude --target codex --port 8787
+# The installer writes ENABLE_TOOL_SEARCH=true; the Claude VS Code webview cannot render
+# tool-search blocks (headroom #2028), so keep it false. Undo everything: headroom install remove
+python3 - <<'PYEOF'
+import json, pathlib
+p = pathlib.Path.home() / ".claude" / "settings.json"
+d = json.loads(p.read_text())
+d.setdefault("env", {})["ENABLE_TOOL_SEARCH"] = "false"
+p.write_text(json.dumps(d, indent=2) + "\n")
+PYEOF
+headroom doctor || true
+notify "Headroom installed! (reload the VS Code window to pick up the new routing)"

@@ -13,7 +13,6 @@
       }
     }
   },
-  "effortLevel": "max",
   "alwaysThinkingEnabled": true,
   "ultracode": true,
   "tui": "fullscreen",
@@ -22,5 +21,10 @@
   "theme": "dark",
   "switchModelsOnFlag": false,
   "remoteControlAtStartup": false,
-  "model": "claude-fable-5[1m]"
+  "effortLevel": "max",
+  "model": "claude-fable-5-1[1m]",
+  "env": {
+    "ANTHROPIC_BASE_URL": "http://127.0.0.1:8787",
+    "ENABLE_TOOL_SEARCH": "false"
+  }
 }
