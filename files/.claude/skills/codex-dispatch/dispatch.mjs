@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { spawnSync } from "node:child_process";
+import { spawn, spawnSync } from "node:child_process";
 import {
     existsSync,
     readdirSync,
@@ -10,7 +10,7 @@ import {
 import { homedir } from "node:os";
 import { join } from "node:path";
 
-const DEFAULT_THRESHOLD = 90;
+const DEFAULT_THRESHOLD = 95;
 const EXIT_ROUTED_TO_OPUS = 75;
 const EXIT_LIMIT_HIT = 76;
 const LIMIT_PATTERN =
@@ -47,88 +47,117 @@ function codexBinary() {
     throw new Error(`codex binary not found under ${root}`);
 }
 
-function rollouts(limit) {
-    let root = join(homedir(), ".codex", "sessions");
-    let files = [];
-    let walk = (dir) => {
-        for (let e of readdirSync(dir, { withFileTypes: true })) {
-            let p = join(dir, e.name);
-            if (e.isDirectory()) walk(p);
-            else if (e.name.endsWith(".jsonl"))
-                files.push({ path: p, mtime: statSync(p).mtimeMs });
-        }
-    };
-    if (existsSync(root)) walk(root);
-    return files.sort((a, b) => b.mtime - a.mtime).slice(0, limit);
-}
-
-function findKey(node, key) {
-    if (!node || typeof node !== "object") return null;
-    if (key in node) return node[key];
-    for (let v of Object.values(node)) {
-        let r = findKey(v, key);
-        if (r) return r;
-    }
-    return null;
-}
-
-function readSnapshot() {
-    for (let { path, mtime } of rollouts(40)) {
-        let lines = readFileSync(path, "utf8")
-            .split("\n")
-            .filter((l) => l.includes('"rate_limits"'));
-        for (let i = lines.length - 1; i >= 0; i--) {
-            try {
-                let rl = findKey(JSON.parse(lines[i]), "rate_limits");
-                if (rl)
-                    return {
-                        rollout: path,
-                        ageMinutes: Math.round((Date.now() - mtime) / 60000),
-                        rateLimits: rl,
-                    };
-            } catch {}
-        }
-    }
-    return null;
-}
-
-export function quota(threshold = DEFAULT_THRESHOLD) {
-    let s = readSnapshot();
-    if (!s) {
+export async function quota(threshold = DEFAULT_THRESHOLD) {
+    let started = Date.now();
+    let child;
+    let timer;
+    try {
+        let result = await new Promise((resolve, reject) => {
+            timer = setTimeout(
+                () => reject(new Error("app-server timed out after 20 s")),
+                20000,
+            );
+            child = spawn(codexBinary(), ["app-server", "--stdio"], {
+                stdio: ["pipe", "pipe", "ignore"],
+            });
+            let buffer = "";
+            let id = 1;
+            let send = (message) => {
+                child.stdin.write(`${JSON.stringify(message)}\n`);
+            };
+            child.on("error", reject);
+            child.stdin.on("error", reject);
+            child.stdout.on("error", reject);
+            child.on("close", () => {
+                reject(new Error("app-server closed before responding"));
+            });
+            child.stdout.setEncoding("utf8");
+            child.stdout.on("data", (data) => {
+                buffer += data;
+                let i;
+                while ((i = buffer.indexOf("\n")) >= 0) {
+                    let line = buffer.slice(0, i);
+                    buffer = buffer.slice(i + 1);
+                    if (!line.trim()) continue;
+                    try {
+                        let message = JSON.parse(line);
+                        if (message?.id !== id) continue;
+                        if (message.error)
+                            throw new Error(
+                                message.error.message || "app-server JSON-RPC error",
+                            );
+                        if (!message.result || typeof message.result !== "object" ||
+                            Array.isArray(message.result))
+                            throw new Error("malformed app-server response");
+                        if (id === 2) return resolve(message.result);
+                        id = 2;
+                        send({ method: "initialized", params: {} });
+                        send({
+                            id,
+                            method: "account/rateLimits/read",
+                            params: { excludeResetCreditDetails: true },
+                        });
+                    } catch (error) {
+                        return reject(error);
+                    }
+                }
+            });
+            send({
+                id,
+                method: "initialize",
+                params: {
+                    clientInfo: {
+                        name: "codex-dispatch",
+                        title: "codex-dispatch",
+                        version: "1.0.0",
+                    },
+                },
+            });
+        });
+        let rl = result.rateLimits;
+        let w = rl?.primary;
+        if (!w || typeof w !== "object" || Array.isArray(w) ||
+            !Number.isFinite(w.usedPercent) || w.usedPercent < 0)
+            throw new Error("malformed rate limits response");
+        let used = w.usedPercent;
+        let reached = typeof rl.rateLimitReachedType === "string" ? rl.rateLimitReachedType : null;
+        let allowed = typeof result.ordinaryUsageAllowed === "boolean" ? result.ordinaryUsageAllowed : null;
+        let capped = used >= threshold || reached !== null || allowed === false;
+        return {
+            route: capped ? "opus" : "codex",
+            used_percent: used,
+            threshold,
+            window_minutes: Number.isInteger(w.windowDurationMins) ? w.windowDurationMins : null,
+            resets_at: Number.isInteger(w.resetsAt)
+                ? new Date(w.resetsAt * 1000).toISOString()
+                : null,
+            limit_reached: reached,
+            usage_allowed: allowed,
+            limit_id: typeof rl.limitId === "string" ? rl.limitId : null,
+            plan: typeof rl.planType === "string" ? rl.planType : null,
+            ms: Date.now() - started,
+        };
+    } catch (error) {
         return {
             route: "codex",
             used_percent: null,
             threshold,
-            note: "no rate_limits snapshot found; assuming Codex is available",
+            error: String(error.message || error).replace(/\s+/g, " ").slice(0, 160),
         };
+    } finally {
+        clearTimeout(timer);
+        child?.stdin.destroy();
+        child?.stdout.destroy();
+        child?.kill("SIGKILL");
     }
-    let w = s.rateLimits.primary || s.rateLimits.secondary || {};
-    let used = typeof w.used_percent === "number" ? w.used_percent : null;
-    let resetMs = w.resets_at ? w.resets_at * 1000 : null;
-    let resetPassed = resetMs !== null && Date.now() > resetMs;
-    let reached = s.rateLimits.rate_limit_reached_type || null;
-    let capped =
-        !resetPassed &&
-        (reached !== null || (used !== null && used >= threshold));
-    return {
-        route: capped ? "opus" : "codex",
-        used_percent: used,
-        threshold,
-        window_minutes: w.window_minutes ?? null,
-        resets_at: resetMs !== null ? new Date(resetMs).toISOString() : null,
-        reset_passed: resetPassed,
-        limit_reached: reached,
-        snapshot_age_minutes: s.ageMinutes,
-        rollout: s.rollout,
-    };
 }
 
-function run(opts) {
+async function run(opts) {
     for (let k of ["prompt", "sandbox", "out"])
         if (!opts[k]) fail(`--${k} is required`);
     let threshold = Number(opts.threshold ?? DEFAULT_THRESHOLD);
     if (!opts["force-codex"]) {
-        let q = quota(threshold);
+        let q = await quota(threshold);
         if (q.route === "opus") {
             emit({ route: "opus", ran: false, ...q });
             process.exit(EXIT_ROUTED_TO_OPUS);
@@ -150,10 +179,10 @@ function run(opts) {
     let log = `${opts.out}.log`;
     writeFileSync(log, text);
     let outExists = existsSync(opts.out) && statSync(opts.out).size > 0;
-    let after = quota(threshold);
+    let after = !outExists ? await quota(threshold) : null;
     let limitHit =
         !outExists &&
-        (after.limit_reached !== null || LIMIT_PATTERN.test(text));
+        (LIMIT_PATTERN.test(text) || after.route === "opus");
     emit({
         route: "codex",
         ran: true,
@@ -166,7 +195,7 @@ function run(opts) {
         out_exists: outExists,
         log,
         limit_hit: limitHit,
-        used_percent_after: after.used_percent,
+        ...(after ? { gate_after: after } : {}),
     });
     if (limitHit) process.exit(EXIT_LIMIT_HIT);
     process.exit(outExists && res.status === 0 ? 0 : res.status || 1);
@@ -183,8 +212,8 @@ function fail(msg) {
 
 let [cmd, ...rest] = process.argv.slice(2);
 let opts = parseArgs(rest);
-if (cmd === "quota") emit(quota(Number(opts.threshold ?? DEFAULT_THRESHOLD)));
-else if (cmd === "run") run(opts);
+if (cmd === "quota") emit(await quota(Number(opts.threshold ?? DEFAULT_THRESHOLD)));
+else if (cmd === "run") await run(opts);
 else
     fail(
         "usage: dispatch.mjs quota [--threshold N] | run --prompt FILE --sandbox MODE --out FILE [--schema FILE] [--label NAME] [--cwd DIR] [--timeout-s N] [--model M] [--threshold N] [--force-codex]",

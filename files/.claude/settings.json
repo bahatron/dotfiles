@@ -14,7 +14,7 @@
     }
   },
   "alwaysThinkingEnabled": true,
-  "ultracode": true,
+  "ultracode": false,
   "tui": "fullscreen",
   "skipDangerousModePermissionPrompt": true,
   "skipWorkflowUsageWarning": true,
@@ -22,9 +22,5 @@
   "switchModelsOnFlag": false,
   "remoteControlAtStartup": false,
   "effortLevel": "max",
-  "model": "claude-fable-5-1[1m]",
-  "env": {
-    "ANTHROPIC_BASE_URL": "http://127.0.0.1:8787",
-    "ENABLE_TOOL_SEARCH": "false"
-  }
+  "model": "claude-fable-5[1m]"
 }

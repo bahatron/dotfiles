@@ -1,0 +1,3 @@
+# Claude Code syncs claude.ai account skills here through the ~/.claude/skills symlink.
+# Account-specific and Anthropic-licensed: keep it out of this public repo.
+files/.claude/skills/synced/
