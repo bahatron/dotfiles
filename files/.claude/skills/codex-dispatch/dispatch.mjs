@@ -167,6 +167,10 @@ async function run(opts) {
     let args = ["exec", "-s", opts.sandbox, "-C", cwd, "-o", opts.out];
     if (opts.schema) args.push("--output-schema", opts.schema);
     if (opts.model) args.push("-m", opts.model);
+    // Codex refuses to run outside a git repository unless told to; folders of
+    // plain documents (bauer/) are not repositories.
+    let inRepo = spawnSync("git", ["-C", cwd, "rev-parse", "--is-inside-work-tree"], { encoding: "utf8" }).status === 0;
+    if (!inRepo) args.push("--skip-git-repo-check");
     args.push("-");
     let started = Date.now();
     let res = spawnSync(codexBinary(), args, {

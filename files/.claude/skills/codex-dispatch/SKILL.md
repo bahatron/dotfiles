@@ -1,16 +1,28 @@
 ---
 name: codex-dispatch
-description: "Route work to the Codex CLI from the main loop with the weekly quota gate applied: builds, reviews, and fan-outs of verifications. Checks Codex's live weekly usage, runs codex exec in the right sandbox, detects the usage cap, and says when to fall back to Opus agents. Use whenever a task is handed to Codex for any reason other than image generation (art skills) or the designer Drive sync (design-sync), and before spawning Opus agents for build or verification work. Never wrap Codex in a Claude sub-agent."
+description: "Route work to the Codex CLI from the main loop with the weekly quota gate applied: builds, reviews of work Codex did not write, and fan-outs of verifications; a fresh Opus agent reviews Codex's builds. Checks Codex's live weekly usage, runs codex exec in the right sandbox, detects the usage cap, and says when to fall back to Opus agents. Use whenever a task is handed to Codex for any reason other than image generation (art skills) or the designer Drive sync (design-sync), whenever a Codex build needs its review, and before spawning Opus agents for build or verification work. Never wrap Codex in a Claude sub-agent."
 ---
 
 # Dispatch work to Codex
 
-Simon's laptop-wide rule, 08-09-2026 (also in ~/.claude/CLAUDE.md): Codex is the default builder and the reviewer, each
-in a fresh session, until its weekly usage window reaches the switch threshold;
-Opus agents then take both roles until the window resets. The reason is to
+Simon's laptop-wide rule, 08-09-2026 (also in ~/.claude/CLAUDE.md): Codex is the default builder,
+in a fresh session per task, until its weekly usage window reaches the switch threshold;
+Opus agents then take every role until the window resets. The reason is to
 spend the Codex week before Claude tokens. Measured the same day: one Codex
 dispatch from the main loop costs about 1k Claude tokens, four Opus verifiers
 cost 542k, and a Claude driver agent around Codex costs 66k to 5.4M per call.
+
+Simon's rule, 03-10-2026: the reviewer is never the model that wrote the work.
+A fresh Opus agent reviews Codex's builds; Codex reviews everything else (work
+Claude or a person wrote). A fresh session of the same model drops the
+builder's context but keeps its training and blind spots; a second model drops
+both.
+
+Measured 08-09 to 03-10 from the Codex rollouts and Claude transcripts: 242
+Codex builds against 62 Codex reviews, and Opus averaging 352k fresh tokens
+(uncached input plus output) per review against 490k per build. Opus reviews
+add about 11% to Claude spend where Opus builds would add 59%, and they free
+the 25% of Codex spend that reviews took, so the cap comes later.
 
 ## Gate
 
@@ -85,6 +97,17 @@ wait
 Run the command in the background when it can outlast one tool call. Never
 spawn a Claude agent to run Codex.
 
+## Review
+
+- **Codex build**: one fresh Opus agent (the Agent tool, `model: "opus"`)
+  reviews it; no gate.
+- **Anything else** (Claude's or a person's work): `run` the review prompt
+  through Codex.
+- **Prompt file**: write it as for Codex; the Opus agent's prompt points at it.
+- **Sub-reviewers** use the reviewer's model: Opus agents under Opus,
+  `codex exec` under Codex.
+- **At the cap**: Opus also reviews Opus builds; no second model is left.
+
 ## Cadence
 
 Simon's rule, 13-09-2026: a review pass runs only when the work needed a
@@ -96,8 +119,9 @@ asks for one. All other work takes the build path.
   did not cover), then the dispatcher runs the touched tests and static checks
   once, then the soft checks, then the report.
 - **Review path**: build, then the scope diff, which also names the files for
-  the review boundary, then one review. The builder ran the tests and the
-  reviewer runs them again, so the dispatcher runs none before the review.
+  the review boundary, then one review by the other model (see Review). The
+  builder ran the tests and the reviewer runs them again, so the dispatcher
+  runs none before the review.
   Soft checks wait for APPROVE (Simon, 13-09-2026): run earlier, they are
   wasted whenever the review requests changes.
 - **Soft checks**: a live screenshot or API call, the formatter in check mode
@@ -109,18 +133,20 @@ Simon's rule, 12-09-2026: when a review is due, every build lands before it
 starts. When a task splits into several builds, run them (in parallel, or in
 order where one depends on another), wait for all of them, run the scope diff
 once over the combined tree, then dispatch one review of the whole diff. Never
-build, review, build, review: each review pass costs about 8 quota points and
-a fresh session's context, and interleaving multiplies that without adding
-independence. Fixes take the same shape: apply every accepted finding, then
-one re-review of the combined fix diff.
+build, review, build, review: an Opus review pass costs about 350k Claude
+tokens and a fresh session's context, and interleaving multiplies that without
+adding independence. Fixes take the same shape: the author's model applies
+every accepted finding, then the same reviewer model re-reviews the combined
+fix diff once.
 
 ## Prompt contents
 
-Codex has none of the conversation's context. A build prompt carries the spec,
-the acceptance criteria, the files in scope, the test command, and an order
-to run the repo's formatter on the files it edits; a review prompt carries
-the boundary as object IDs, the original request verbatim, and a pointer to
-the review-pass skill. AGENTS.md applies to Codex automatically.
+Neither Codex nor a fresh Opus agent has the conversation's context. A build
+prompt carries the spec, the acceptance criteria, the files in scope, the test
+command, and an order to run the repo's formatter on the files it edits; a
+review prompt carries the boundary as object IDs, the original request
+verbatim, and a pointer to the review-pass skill. AGENTS.md applies to Codex
+automatically; an Opus reviewer's prompt tells it to read AGENTS.md first.
 
 State the edit boundary explicitly: "change only the lines the task needs; never
 reformat or rewrite existing lines". Seen 12-09-2026: a rule of "no em-dashes in
