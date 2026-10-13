@@ -33,6 +33,13 @@ function parseArgs(argv) {
 }
 
 function codexBinary() {
+    let os = process.platform === "darwin" ? "macos" :
+        process.platform === "linux" ? "linux" : null;
+    if (!os) throw new Error(`unsupported platform: ${process.platform}`);
+    let arch = process.arch === "x64" ? "x86_64" :
+        process.arch === "arm64" ? "aarch64" : null;
+    if (!arch) throw new Error(`unsupported architecture: ${process.arch}`);
+    let directory = `${os}-${arch}`;
     let root = join(homedir(), ".vscode", "extensions");
     let dirs = existsSync(root)
         ? readdirSync(root)
@@ -41,10 +48,10 @@ function codexBinary() {
               .reverse()
         : [];
     for (let d of dirs) {
-        let p = join(root, d, "bin", "linux-x86_64", "codex");
+        let p = join(root, d, "bin", directory, "codex");
         if (existsSync(p)) return p;
     }
-    throw new Error(`codex binary not found under ${root}`);
+    throw new Error(`codex binary not found under ${root} in bin/${directory}`);
 }
 
 export async function quota(threshold = DEFAULT_THRESHOLD) {
