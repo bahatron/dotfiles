@@ -1,0 +1,143 @@
+#!/bin/bash
+
+# Voice for the chat skill: Kokoro-82M on mlx-audio on macOS, Piper on Linux (decided 17-10-2026).
+if [ "$#" -gt 0 ]; then
+    text="$*"
+else
+    # The sentinel preserves trailing newlines in command substitution.
+    text=$(cat; printf '.')
+    text=${text%.}
+fi
+
+[[ "$text" == *[![:space:]]* ]] || exit 0
+
+case "$(uname -s)" in
+    Linux)
+        fallback() {
+            if command -v espeak-ng > /dev/null 2>&1; then
+                printf 'speak: %s; falling back to espeak-ng\n' "$1" >&2
+                if [ -n "${SPEAK_OUTPUT:-}" ]; then
+                    printf '%s' "$text" | espeak-ng --stdin -w "$SPEAK_OUTPUT"
+                else
+                    printf '%s' "$text" | espeak-ng --stdin
+                fi
+            else
+                printf 'speak: %s; espeak-ng is not installed\n' "$1" >&2
+                return 1
+            fi
+        }
+
+        work_dir=$(mktemp -d "${TMPDIR:-/tmp}/speak.XXXXXX" 2>/dev/null) || {
+            fallback 'could not create temporary directory'
+            exit $?
+        }
+        trap 'rm -rf "$work_dir"' EXIT
+        trap 'exit 129' HUP
+        trap 'exit 130' INT
+        trap 'exit 143' TERM
+
+        voice=${SPEAK_VOICE:-en_US-lessac-medium}
+        model="$HOME/.local/share/piper/voices/$voice.onnx"
+        if [ ! -f "$model" ] || [ ! -f "$model.json" ]; then
+            fallback "Piper voice '$voice' is missing its model or configuration in $HOME/.local/share/piper/voices"
+            exit $?
+        fi
+        if ! command -v piper > /dev/null 2>&1; then
+            fallback 'piper is not installed'
+            exit $?
+        fi
+        if ! printf '%s' "$text" | piper --model "$model" --output_file "$work_dir/audio.wav" \
+            > "$work_dir/piper.log" 2>&1; then
+            fallback "Piper synthesis failed for voice '$voice'"
+            exit $?
+        fi
+        if [ ! -s "$work_dir/audio.wav" ]; then
+            fallback 'Piper returned empty audio'
+            exit $?
+        fi
+        if [ -n "${SPEAK_OUTPUT:-}" ]; then
+            if cp "$work_dir/audio.wav" "$SPEAK_OUTPUT" 2>/dev/null; then
+                exit 0
+            fi
+            fallback 'could not write audio output'
+            exit $?
+        fi
+        for player in pw-play paplay aplay; do
+            if command -v "$player" > /dev/null 2>&1; then
+                if "$player" "$work_dir/audio.wav" > /dev/null 2>&1; then
+                    exit 0
+                fi
+                fallback "audio playback failed ($player)"
+                exit $?
+            fi
+        done
+        fallback 'no audio player found (pw-play, paplay or aplay)'
+        exit $?
+        ;;
+    Darwin) ;;
+    *)
+        printf '%s\n' 'speak: unsupported operating system' >&2
+        exit 1
+        ;;
+esac
+
+fallback() {
+    printf 'speak: %s; falling back to say\n' "$1" >&2
+    if [ -n "${SPEAK_OUTPUT:-}" ]; then
+        printf '%s' "$text" | say -f - -o "$SPEAK_OUTPUT" \
+            --file-format=WAVE --data-format=LEI16
+    else
+        printf '%s' "$text" | say -f -
+    fi
+}
+
+work_dir=$(mktemp -d "${TMPDIR:-/tmp}/speak.XXXXXX" 2>/dev/null) || {
+    fallback 'could not create temporary directory'
+    exit $?
+}
+trap 'rm -rf "$work_dir"' EXIT
+trap 'exit 129' HUP
+trap 'exit 130' INT
+trap 'exit 143' TERM
+
+voice=${SPEAK_VOICE:-af_heart}
+if ! jq -n --arg input "$text" --arg voice "$voice" \
+    --arg lang_code "${voice:0:1}" --argjson speed "${SPEAK_SPEED:-1.0}" \
+    '{model: "mlx-community/Kokoro-82M-bf16", input: $input,
+      voice: $voice, lang_code: $lang_code, speed: $speed,
+      response_format: "wav"}' > "$work_dir/request.json" 2>/dev/null; then
+    fallback 'could not build speech request JSON'
+    exit $?
+fi
+
+http_status=$(curl --noproxy '*' --silent --connect-timeout 1 \
+    --max-time "${SPEAK_TIMEOUT:-30}" \
+    --output "$work_dir/audio.wav" --write-out '%{http_code}' \
+    --header 'Content-Type: application/json' \
+    --data-binary "@$work_dir/request.json" \
+    "http://127.0.0.1:${SPEAK_PORT:-7341}/v1/audio/speech" 2>/dev/null)
+curl_status=$?
+if [ "$curl_status" -ne 0 ]; then
+    fallback "server request failed (curl exit $curl_status)"
+    exit $?
+fi
+if [ "$http_status" != 200 ]; then
+    fallback "server returned HTTP $http_status"
+    exit $?
+fi
+if [ ! -s "$work_dir/audio.wav" ]; then
+    fallback 'server returned empty audio'
+    exit $?
+fi
+
+if [ -n "${SPEAK_OUTPUT:-}" ]; then
+    if cp "$work_dir/audio.wav" "$SPEAK_OUTPUT" 2>/dev/null; then
+        exit 0
+    fi
+    fallback 'could not write audio output'
+else
+    if afplay "$work_dir/audio.wav" 2>/dev/null; then
+        exit 0
+    fi
+    fallback 'audio playback failed'
+fi

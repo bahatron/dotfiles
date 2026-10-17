@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>local.speak-server</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/bin/sh</string>
+        <string>-c</string>
+        <string>exec "$HOME/.local/bin/mlx_audio.server" --host 127.0.0.1 --port 7341 --allowed-origins "" --log-dir "$HOME/Library/Logs" &gt;&gt; "$HOME/Library/Logs/speak-server.log" 2&gt;&amp;1</string>
+    </array>
+    <key>EnvironmentVariables</key>
+    <dict>
+        <!-- Splitting a comma yields two empty origins; no browser origin matches. -->
+        <key>MLX_AUDIO_ALLOWED_ORIGINS</key>
+        <string>,</string>
+    </dict>
+    <key>RunAtLoad</key>
+    <true/>
+    <key>KeepAlive</key>
+    <true/>
+</dict>
+</plist>

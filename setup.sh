@@ -192,6 +192,10 @@ if [ "$OS" = Darwin ]; then
     notify "Idle system sleep checked!"
 fi
 
+## Voice for the chat skill
+# Kokoro-82M on macOS, Piper on Linux for now; speak-setup.sh also runs alone (decided 17-10-2026).
+"${BASEDIR}/speak-setup.sh"
+
 ## macOS approvals only a person can click; post-setup.sh also runs alone, without touching the dotfiles
 if [ "$OS" = Darwin ]; then
     "${BASEDIR}/post-setup.sh"

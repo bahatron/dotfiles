@@ -5,7 +5,7 @@ description: Hold a spoken, voice-based conversation with the user — reply out
 
 # Chat — voice mode
 
-The user wants to *talk*, with the answer kept on screen too. Speak each reply aloud with the `speak` command, and also give the full answer as a normal written reply. (`speak` is a Piper neural-TTS wrapper at `~/.local/bin/speak`.)
+The user wants to *talk*, with the answer kept on screen too. Speak each reply aloud with the `speak` command, and also give the full answer as a normal written reply. (`speak` uses Kokoro-82M on a local mlx-audio server with `say` fallback on macOS and Piper on Linux, and is installed at `~/.local/bin/speak` by `speak-setup.sh` in `~/dotfiles`.)
 
 ## Every turn
 
@@ -39,10 +39,12 @@ Code, commands, tables, diagrams, and links belong only in the written reply, ne
 
 ## Voice override
 
-Default voice is `en_US-lessac-medium`. To use another installed voice for the session, prefix the command:
+Claude Code's Bash tool does not keep environment variables between commands, so prefix every `speak` command for the session with `SPEAK_VOICE=...` to use another voice. On macOS the default is `af_heart`; alternatives include `af_bella`, `bf_emma`, `am_michael`, and `bm_george`:
 
 ```bash
-PIPER_VOICE=~/.local/share/piper/voices/en_US-ryan-high.onnx speak <<'SPEAK'
+SPEAK_VOICE=bf_emma speak <<'SPEAK'
 Switching to a different voice for this chat.
 SPEAK
 ```
+
+On Linux the default is `en_US-lessac-medium`. Use any Piper voice downloaded to `~/.local/share/piper/voices`, for example `SPEAK_VOICE=en_US-lessac-medium speak`.
