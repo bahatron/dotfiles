@@ -126,7 +126,7 @@
                         ]
                     },
                     {
-                        "description": "Linux-style Super: tap alone for Mission Control; Alt or Super + key above Tab cycles the app's windows",
+                        "description": "Linux-style Super: tap alone for Mission Control; Super + key above Tab cycles the app's windows; Alt + key above Tab shows them (App Exposé)",
                         "manipulators": [
                             {
                                 "type": "basic",
@@ -169,17 +169,14 @@
                                     "modifiers": {
                                         "mandatory": [
                                             "option"
-                                        ],
-                                        "optional": [
-                                            "shift"
                                         ]
                                     }
                                 },
                                 "to": [
                                     {
-                                        "key_code": "grave_accent_and_tilde",
+                                        "key_code": "down_arrow",
                                         "modifiers": [
-                                            "left_command"
+                                            "left_control"
                                         ]
                                     }
                                 ]
@@ -191,17 +188,14 @@
                                     "modifiers": {
                                         "mandatory": [
                                             "option"
-                                        ],
-                                        "optional": [
-                                            "shift"
                                         ]
                                     }
                                 },
                                 "to": [
                                     {
-                                        "key_code": "grave_accent_and_tilde",
+                                        "key_code": "down_arrow",
                                         "modifiers": [
-                                            "left_command"
+                                            "left_control"
                                         ]
                                     }
                                 ]
@@ -225,6 +219,32 @@
                                         "modifiers": [
                                             "left_command"
                                         ]
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "description": "Linux-style Ctrl+Alt+T: open iTerm2, or bring its window to the front",
+                        "manipulators": [
+                            {
+                                "type": "basic",
+                                "from": {
+                                    "key_code": "t",
+                                    "modifiers": {
+                                        "mandatory": [
+                                            "control",
+                                            "option"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "software_function": {
+                                            "open_application": {
+                                                "bundle_identifier": "com.googlecode.iterm2"
+                                            }
+                                        }
                                     }
                                 ]
                             }

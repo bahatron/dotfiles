@@ -3,7 +3,8 @@
   "schemes": [
     {
       "if": { "device": { "category": "mouse" } },
-      "scrolling": { "reverse": { "vertical": true } }
+      "scrolling": { "reverse": { "vertical": true } },
+      "pointer": { "disableAcceleration": true }
     }
   ]
 }

@@ -44,10 +44,13 @@ case "$OS" in
         "$BREW" install git htop node direnv
         "$BREW" install --cask iterm2
         # LinearMouse reverses the wheel for mice only; the trackpad keeps the macOS default (decided 13-10-2026).
+        # LinearMouse also turns off pointer acceleration for mice only, a flat profile as on Linux (decided 17-10-2026).
         "$BREW" install --cask linearmouse
         # Karabiner-Elements gives Linux-style Ctrl shortcuts and Linux modifier order (decided 13-10-2026).
         # VS Code keeps its own Ctrl+R, F5 and Ctrl+G; it uses them as on Linux (decided 17-10-2026).
-        # Super alone opens Mission Control; Alt or Super + the key above Tab cycles app windows, as in GNOME (decided 17-10-2026).
+        # Super alone opens Mission Control and Super + the key above Tab cycles app windows, as in GNOME (decided 17-10-2026).
+        # Alt + the key above Tab shows the app's windows (App Exposé) instead of cycling them (decided 17-10-2026).
+        # Ctrl+Alt+T opens iTerm2 or brings it to the front, as on Ubuntu (decided 17-10-2026).
         "$BREW" install --cask karabiner-elements
         ;;
 esac
