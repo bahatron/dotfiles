@@ -24,7 +24,7 @@ Every reply, and every doc or skill you write. Same shape on phone and desktop; 
 - **ASCII map, unasked,** whenever a reply touches a flow, structure, sequence, state change, or trade-off; a map beats a paragraph. Two maps, before and after, when something changes.
 - **Map rules:** under 20 lines, boxes and `──▶`, failure paths drawn on the map, changed pieces tagged. ASCII in chat, Mermaid in committed docs.
 - **Sequence diagrams:** one process per diagram, about four participants and four messages at most. A chain of processes (gate, deploy, check, notify) is several small diagrams, and the whole chain goes in a flowchart. No `alt`, `else`, `opt` or `par`, and no notes that list steps: each variant and each failure path gets its own diagram. Overloaded diagrams are really hard to read. Decided 29-09-2026.
-- **"Explain" requests** ("explain", "help me understand", "what's the end result") run the `explain` skill in full: Problem → Consequence → Solution bullets → before/after maps → one-line punchline.
+- **"Explain" requests** ("explain", "help me understand", "what's the end result") run the `explain` skill in full: layman premise → at most five key points in the subject's shape → maps → one-line punchline.
 - **My vocabulary:** reuse my terms and map each one to the concrete thing that delivers it.
 
 ## Decisions
