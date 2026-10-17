@@ -72,6 +72,17 @@ node ~/.claude/skills/codex-dispatch/dispatch.mjs run --label <name> \
 - **`--schema`** passes a strict JSON schema (`additionalProperties: false`,
   every property required) so Codex's last message is validated JSON.
 
+## Report
+
+Simon's rule, 17-10-2026: dispatch stays in the main loop, since a wrapper
+agent costs 66k to 5.4M Claude tokens per call; two messages keep each run
+visible instead.
+
+- **At dispatch:** one line with the label, the task, the sandbox and the gate reading.
+- **On return:** exit code and run time, then files changed against the spec.
+- **Checks:** each check run, pass or fail, failure output verbatim.
+- **Open items:** anything unverified or needing Simon, and the out file's path.
+
 ## Sandbox
 
 - **`read-only`**: analysis, finders, verifying claims, anything without tests.

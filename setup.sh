@@ -46,6 +46,8 @@ case "$OS" in
         # LinearMouse reverses the wheel for mice only; the trackpad keeps the macOS default (decided 13-10-2026).
         "$BREW" install --cask linearmouse
         # Karabiner-Elements gives Linux-style Ctrl shortcuts and Linux modifier order (decided 13-10-2026).
+        # VS Code keeps its own Ctrl+R, F5 and Ctrl+G; it uses them as on Linux (decided 17-10-2026).
+        # Super alone opens Mission Control; Alt or Super + the key above Tab cycles app windows, as in GNOME (decided 17-10-2026).
         "$BREW" install --cask karabiner-elements
         ;;
 esac
@@ -121,6 +123,11 @@ if [ "$OS" = Darwin ]; then
     fi
 fi
 
+## Husky: load nvm for Git hooks launched by GUI clients
+HUSKY_CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/husky"
+mkdir -p "$HUSKY_CONFIG_DIR"
+ln -sf "${BASEDIR}/files/.config/husky/init.sh" "$HUSKY_CONFIG_DIR/init.sh"
+
 ## Claude Code: symlink tracked config only; installation state stays local
 mkdir -p ~/.claude
 ln -sf "${BASEDIR}/files/.claude/CLAUDE.md" ~/.claude/CLAUDE.md
@@ -128,7 +135,7 @@ ln -sf "${BASEDIR}/files/.claude/settings.json" ~/.claude/settings.json
 rm -rf ~/.claude/skills
 ln -sf "${BASEDIR}/files/.claude/skills" ~/.claude/skills
 mkdir -p ~/.claude/hooks
-ln -sf "${BASEDIR}/files/.claude/hooks/cold-cache-guard.mjs" ~/.claude/hooks/cold-cache-guard.mjs
+rm -f ~/.claude/hooks/cold-cache-guard.mjs
 ln -sf "${BASEDIR}/files/.claude/hooks/never-ask.mjs" ~/.claude/hooks/never-ask.mjs
 
 ## VS Code: code on the command line (macOS; Linux packages already provide it)
@@ -171,8 +178,18 @@ else
 fi
 sleep 3
 
+## Power: keep the Mac awake while the display sleeps
+# Disable idle system sleep on all power sources so background work keeps running (decided 16-10-2026).
 if [ "$OS" = Darwin ]; then
-    notify "Keyboard: add the British - PC input source in System Settings > Keyboard > Input Sources (matches Linux gb)"
-    notify "Mouse: open LinearMouse once and grant Accessibility access"
-    notify "Keyboard: open Karabiner-Elements once, approve its permissions, and pick ISO if asked for the keyboard type"
+    notify "Checking idle system sleep..."
+    if pmset -g custom | awk '$1 == "sleep" && $2 != 0 { on = 1 } END { exit !on }'; then
+        notify "Disabling idle system sleep on all power sources; sudo will ask for your password..."
+        sudo pmset -a sleep 0
+    fi
+    notify "Idle system sleep checked!"
+fi
+
+## macOS approvals only a person can click; post-setup.sh also runs alone, without touching the dotfiles
+if [ "$OS" = Darwin ]; then
+    "${BASEDIR}/post-setup.sh"
 fi

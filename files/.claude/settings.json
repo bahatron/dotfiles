@@ -1,7 +1,7 @@
 {
   "env": {
     "CLAUDE_CODE_EFFORT_LEVEL": "max",
-    "COLD_CACHE_GUARD": "off"
+    "CLAUDE_CODE_PLUGIN_DIRS": "~/dotfiles/files/.claude/mods/cold-cache-guard"
   },
   "permissions": {
     "allow": [
@@ -13,7 +13,7 @@
     ],
     "defaultMode": "bypassPermissions"
   },
-  "model": "opus[1m]",
+  "model": "opus",
   "hooks": {
     "PermissionRequest": [
       {
@@ -21,17 +21,6 @@
           {
             "type": "command",
             "command": "node \"$HOME/.claude/hooks/never-ask.mjs\"",
-            "timeout": 10
-          }
-        ]
-      }
-    ],
-    "UserPromptSubmit": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "node \"$HOME/.claude/hooks/cold-cache-guard.mjs\"",
             "timeout": 10
           }
         ]
@@ -51,16 +40,16 @@
   },
   "outputStyle": "Concise",
   "alwaysThinkingEnabled": true,
-  "tui": "fullscreen",
-  "skipDangerousModePermissionPrompt": true,
-  "skipWorkflowUsageWarning": true,
-  "theme": "dark",
-  "switchModelsOnFlag": false,
-  "remoteControlAtStartup": false,
   "modelSettings": {
     "claude-opus-5": {},
     "claude-fable-5-1[1m]": {},
     "claude-fable-5-1": {},
     "claude-opus-5-5": {}
-  }
+  },
+  "tui": "fullscreen",
+  "skipDangerousModePermissionPrompt": true,
+  "skipWorkflowUsageWarning": true,
+  "theme": "dark",
+  "switchModelsOnFlag": false,
+  "remoteControlAtStartup": false
 }

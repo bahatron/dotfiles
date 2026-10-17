@@ -3,6 +3,9 @@
         {
             "name": "Default",
             "selected": true,
+            "virtual_hid_keyboard": {
+                "keyboard_type_v2": "iso"
+            },
             "complex_modifications": {
                 "rules": [
                     {
@@ -32,7 +35,15 @@
                                             }
                                         ]
                                     }
-                                ]
+                                ],
+                                "to_if_alone": [
+                                    {
+                                        "apple_vendor_keyboard_key_code": "mission_control"
+                                    }
+                                ],
+                                "parameters": {
+                                    "basic.to_if_alone_timeout_milliseconds": 300
+                                }
                             },
                             {
                                 "type": "basic",
@@ -108,6 +119,111 @@
                                             {
                                                 "is_built_in_keyboard": true
                                             }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "description": "Linux-style Super: tap alone for Mission Control; Alt or Super + key above Tab cycles the app's windows",
+                        "manipulators": [
+                            {
+                                "type": "basic",
+                                "from": {
+                                    "key_code": "left_command",
+                                    "modifiers": {
+                                        "optional": [
+                                            "any"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "left_command"
+                                    }
+                                ],
+                                "to_if_alone": [
+                                    {
+                                        "apple_vendor_keyboard_key_code": "mission_control"
+                                    }
+                                ],
+                                "parameters": {
+                                    "basic.to_if_alone_timeout_milliseconds": 300
+                                },
+                                "conditions": [
+                                    {
+                                        "type": "device_unless",
+                                        "identifiers": [
+                                            {
+                                                "is_built_in_keyboard": true
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "basic",
+                                "from": {
+                                    "key_code": "grave_accent_and_tilde",
+                                    "modifiers": {
+                                        "mandatory": [
+                                            "option"
+                                        ],
+                                        "optional": [
+                                            "shift"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "grave_accent_and_tilde",
+                                        "modifiers": [
+                                            "left_command"
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "basic",
+                                "from": {
+                                    "key_code": "non_us_backslash",
+                                    "modifiers": {
+                                        "mandatory": [
+                                            "option"
+                                        ],
+                                        "optional": [
+                                            "shift"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "grave_accent_and_tilde",
+                                        "modifiers": [
+                                            "left_command"
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "basic",
+                                "from": {
+                                    "key_code": "non_us_backslash",
+                                    "modifiers": {
+                                        "mandatory": [
+                                            "command"
+                                        ],
+                                        "optional": [
+                                            "shift"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "grave_accent_and_tilde",
+                                        "modifiers": [
+                                            "left_command"
                                         ]
                                     }
                                 ]
@@ -1388,7 +1504,8 @@
                                             "^org\\.gnu\\.Emacs$",
                                             "^org\\.gnu\\.AquamacsEmacs$",
                                             "^org\\.gnu\\.Aquamacs$",
-                                            "^org\\.pqrs\\.unknownapp\\.conkeror$"
+                                            "^org\\.pqrs\\.unknownapp\\.conkeror$",
+                                            "^com\\.microsoft\\.VSCode"
                                         ]
                                     }
                                 ]
@@ -1451,7 +1568,8 @@
                                             "^org\\.gnu\\.Emacs$",
                                             "^org\\.gnu\\.AquamacsEmacs$",
                                             "^org\\.gnu\\.Aquamacs$",
-                                            "^org\\.pqrs\\.unknownapp\\.conkeror$"
+                                            "^org\\.pqrs\\.unknownapp\\.conkeror$",
+                                            "^com\\.microsoft\\.VSCode"
                                         ]
                                     }
                                 ]
@@ -1659,7 +1777,8 @@
                                             "^org\\.gnu\\.Emacs$",
                                             "^org\\.gnu\\.AquamacsEmacs$",
                                             "^org\\.gnu\\.Aquamacs$",
-                                            "^org\\.pqrs\\.unknownapp\\.conkeror$"
+                                            "^org\\.pqrs\\.unknownapp\\.conkeror$",
+                                            "^com\\.microsoft\\.VSCode"
                                         ]
                                     }
                                 ]

@@ -1,4 +1,6 @@
 # Claude Code syncs claude.ai account skills here through the ~/.claude/skills symlink.
 # Account-specific and Anthropic-licensed: keep it out of this public repo.
 files/.claude/skills/synced/
+files/.claude/mods/cold-cache-guard/.claude-plugin/types/
+files/.claude/mods/cold-cache-guard/tsconfig.json
 files/.config/karabiner/automatic_backups/

@@ -1,0 +1,7 @@
+{
+    "name": "cold-cache-guard",
+    "version": "0.1.0",
+    "description": "Compact large conversations before a prompt rewrites an expired cache.",
+    "author": { "name": "bahatron" },
+    "types": "./types/index.d.ts"
+}
