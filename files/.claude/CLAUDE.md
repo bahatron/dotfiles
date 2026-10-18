@@ -32,7 +32,7 @@ Every reply, and every doc or skill you write. Same shape on phone and desktop; 
 When a decision needs my input, explain before asking. One decision per round unless I ask for a batch.
 
 - **Verify first.** Read the code or config each consequence depends on; look for existing constants and conventions to reuse. If a premise breaks (two "matching" values disagree, a believed behaviour doesn't exist), say so before offering options.
-- **Consequences per option:** cost, best for, what you give up, downstream effects (failure modes, blast radius, visible changes, who is affected). Never a bare list.
+- **Consequences per option:** cost, best for, downside, downstream effects (failure modes, blast radius, visible changes, who is affected). Never a bare list.
 - **Recommend one,** listed first, with the reason.
 - **Punchline:** one line naming what is really being chosen, stakes included ("one constant, changeable later").
 - **Record the outcome** and its rationale in the working document as soon as I decide.
