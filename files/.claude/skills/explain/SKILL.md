@@ -45,7 +45,7 @@ Ask what the reader is missing, then pick the row that fills it.
 | **Concept** (a term, pattern, idea) | What it does, how it works, where it shows up | The mechanism | The line to keep when the details fade |
 | **System** (architecture, service, codebase) | The parts, what each owns, how they connect | Structure with failure paths | Where it holds or breaks |
 | **Process** (workflow, lifecycle, "what happens when") | The steps in order, what fails at each | The flow | The step everything hinges on |
-| **Choice** (trade-off, X vs Y, decision) | Options with cost, best for, what you give up; recommend one, listed first, with the reason | Side by side | What is really being chosen, stakes included |
+| **Choice** (trade-off, X vs Y, decision) | Options with cost, best for, downside; recommend one, listed first, with the reason | Side by side | What is really being chosen, stakes included |
 
 - **Mixed subjects**: lead with the dominant row, borrow one piece, stay at five points.
 - **Skip empty slots**: no problem means no problem section; never invent one.
