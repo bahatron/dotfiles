@@ -51,6 +51,7 @@ case "$OS" in
         # Super alone opens Mission Control and Super + the key above Tab cycles app windows, as in GNOME (decided 17-10-2026).
         # Alt + the key above Tab shows the app's windows (App Exposé) instead of cycling them (decided 17-10-2026).
         # Ctrl+Alt+T opens iTerm2 or brings it to the front, as on Ubuntu (decided 17-10-2026).
+        # Print Screen starts an area capture (Command+Shift+4), not the screenshot toolbar (decided 19-10-2026).
         "$BREW" install --cask karabiner-elements
         ;;
 esac
