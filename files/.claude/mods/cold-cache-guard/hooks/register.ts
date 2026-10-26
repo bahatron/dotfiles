@@ -183,9 +183,14 @@ export const register: Register = (on, options) => {
                     if (!job.compactionAttempted) {
                         await update($, pendingPrompts, (jobs) => (jobs ?? []).map((pending) =>
                             pending.id === job.id ? { ...pending, compactionAttempted: true } : pending));
-                        const result = await $.session.compact();
-                        if (result.skip !== undefined) {
-                            $.ui.toast(`Compaction skipped: ${oneLine(result.skip)}; sending your prompt`);
+                        // Headless (VS Code, SDK, -p) rejects $.session.compact() in Claude Code 2.1.310; /compact via $.command.run works (verified 26-10-2026).
+                        if (e.isInteractive) {
+                            const result = await $.session.compact();
+                            if (result.skip !== undefined) {
+                                $.ui.toast(`Compaction skipped: ${oneLine(result.skip)}; sending your prompt`);
+                            }
+                        } else {
+                            await $.command.run({ command: "compact" });
                         }
                     }
                 } catch (error) {

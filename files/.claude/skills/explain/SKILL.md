@@ -58,7 +58,19 @@ Ask what the reader is missing, then pick the row that fills it.
 - **Failure paths**: draw arrows to bad outcomes on the map, never in a footnote. A happy-path-only diagram explains nothing worth explaining.
 - **Before and after**: use one visual vocabulary so maps diff by eye. Show where the old failure now goes: the retry path, the visible ledger.
 - **Changes**: tag changed or new pieces `NEW`; label edges with the hop's meaning, not just transport.
-- **Conventions**: boxes for components, `──▶` for flow, `▼` for consequence drops. Keep each map under ~20 lines; two small maps beat one mural.
+- **Conventions**: boxes for components; flows run top to bottom with `▼`, and negative paths branch right with `──▶`, so the happy path reads straight down (Simon's rule, 25-10-2026). Keep each map under ~20 lines; two small maps beat one mural.
+
+```
+┌──────────┐
+│ step one │──fails──▶ bad outcome
+└────┬─────┘
+     ▼
+┌──────────┐
+│ step two │──rejects──▶ bad outcome
+└────┬─────┘
+     ▼
+  success
+```
 
 ASCII in chat, Mermaid in committed docs; never paste Mermaid into chat.
 

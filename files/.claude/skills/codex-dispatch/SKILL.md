@@ -1,6 +1,6 @@
 ---
 name: codex-dispatch
-description: "Route work to the Codex CLI from the main loop with the weekly quota gate applied: builds, reviews of work Codex did not write, and fan-outs of verifications; a fresh Opus agent reviews Codex's builds. Checks Codex's live weekly usage, runs codex exec in the right sandbox, detects the usage cap, and says when to fall back to Opus agents. Use whenever a task is handed to Codex for any reason other than image generation (art skills) or the designer Drive sync (design-sync), whenever a Codex build needs its review, and before spawning Opus agents for build or verification work. Never wrap Codex in a Claude sub-agent."
+description: "Route work to the Codex CLI from the main loop with the quota gate applied: builds, reviews of work Codex did not write, and fan-outs of verifications; a fresh Opus agent reviews Codex's builds, and once Claude's usage reaches 90% Codex takes every role. Checks Codex's live weekly usage and Claude's live 5-hour and weekly usage, runs codex exec in the right sandbox, detects the usage cap, and says when to fall back to Opus agents or stop. Use whenever a task is handed to Codex for any reason other than image generation (art skills) or the designer Drive sync (design-sync), whenever a Codex build needs its review, and before spawning Opus agents for build or verification work. Never wrap Codex in a Claude sub-agent."
 ---
 
 # Dispatch work to Codex
@@ -24,6 +24,12 @@ Codex builds against 62 Codex reviews, and Opus averaging 352k fresh tokens
 add about 11% to Claude spend where Opus builds would add 59%, and they free
 the 25% of Codex spend that reviews took, so the cap comes later.
 
+Simon's rule, 21-10-2026: Claude's allocation outranks Codex's. Once Claude's
+5-hour or weekly usage reaches 90%, Codex takes every role until that window
+resets: builds, verifications, and reviews, its own builds included (in a fresh
+session). Codex then runs past its 95% switch to its hard cap; with both capped,
+nothing runs until Simon says so.
+
 ## Gate
 
 ```bash
@@ -32,18 +38,34 @@ node ~/.claude/skills/codex-dispatch/dispatch.mjs quota
 
 Asks the Codex app-server for the live weekly figure, the same
 `account/rateLimits/read` call the TUI's `/status` and the VS Code extension
-make, and prints one JSON line: `route` (`codex` or `opus`), `used_percent`,
-`threshold` (95 unless `--threshold` is given), `window_minutes`, `resets_at`,
-`limit_reached`, `usage_allowed`, `limit_id`, `plan`, and `ms`. The window is
-`primary` (10080 minutes on this plan; `secondary` is null).
+make, and prints one JSON line: `route` (`codex`, `opus` or `stop`), `review`
+(who reviews a Codex build: `opus`, or `codex` while Claude is at 90%),
+`used_percent`, `threshold` (95 unless `--threshold` is given; 100 while Claude
+is at 90%), `window_minutes`, `resets_at`, `limit_reached`, `usage_allowed`,
+`limit_id`, `plan`, `ms`, and `claude`. The window is `primary` (10080 minutes
+on this plan; `secondary` is null).
 
-Routing: `opus` when `used_percent` is at or above the threshold, or the
-backend reports a limit reached or ordinary usage not allowed; `codex`
-otherwise. Nothing is cached and nothing is read from session files: every
-call spawns a short-lived `codex app-server`, reads the backend, and exits,
-about half a second. A failed read (offline, logged out, 20 s timeout)
-reports `error` and routes to Codex; the run then fails on its own with the
-reason in its log.
+The same call reads Claude's live usage from Anthropic's OAuth usage endpoint
+(`api.anthropic.com/api/oauth/usage`), signed in with Claude Code's stored
+login: the macOS keychain item `Claude Code-credentials`, or
+`~/.claude/.credentials.json` elsewhere. The token is never printed. `claude`
+holds `used_percent` (the higher of the 5-hour and weekly windows), `threshold`
+(90 unless `--claude-threshold` is given), `five_hour`, `seven_day`, the higher
+window's `resets_at`, and `ms`. Model-scoped weekly buckets (Fable's, today) do
+not count: Claude's builders and reviewers run Opus.
+
+| Claude      | Codex under its cap                | Codex capped |
+|-------------|------------------------------------|--------------|
+| under 90%   | `codex`; Opus reviews Codex builds | `opus`       |
+| 90% or more | `codex`; Codex reviews them too    | `stop`       |
+
+Codex counts as capped when `used_percent` is at or above `threshold`, or the
+backend reports a limit reached or ordinary usage not allowed. Nothing is cached
+and nothing is read from session files: every call spawns a short-lived
+`codex app-server` and asks Anthropic in parallel, about half a second. A failed
+Codex read (offline, logged out, 20 s timeout) reports `error` and routes to
+Codex; the run then fails on its own with the reason in its log. A failed Claude
+read reports `claude.error` and routes as if Claude were under 90%.
 
 Simon's rule, 13-09-2026: the gate is this live call and nothing else. Until
 then it read the last usage snapshot from the session rollouts, which was only
@@ -61,11 +83,11 @@ node ~/.claude/skills/codex-dispatch/dispatch.mjs run --label <name> \
   [--schema <scratch>/<name>-schema.json] [--timeout-s 900] [--cwd <repo>]
 ```
 
-- **Runs the gate first** unless `--force-codex`; exit 75 means it routed to
-  Opus and nothing ran.
+- **Runs the gate first** unless `--force-codex`; nothing runs on exit 75
+  (routed to Opus) or exit 77 (`stop`: Codex capped, Claude at 90%).
 - **Exit 76** means Codex hit its cap mid-run (no output, and limit text in the
-  log or a fresh gate reading that routes to Opus); route the same prompt to
-  Opus.
+  log or a fresh gate reading that routes away from Codex); send the same
+  prompt where `gate_after.route` points (Opus; on `stop`, ask Simon).
 - **Exit 0** with `out_exists: true` is success; the log sits next to the out
   file as `<out>.log`.
 - **Prompt and out files live in the session scratchpad**, never in the repo.
@@ -78,7 +100,7 @@ Simon's rule, 17-10-2026: dispatch stays in the main loop, since a wrapper
 agent costs 66k to 5.4M Claude tokens per call; two messages keep each run
 visible instead.
 
-- **At dispatch:** one line with the label, the task, the sandbox and the gate reading.
+- **At dispatch:** one line with the label, the task, the sandbox and both gate readings.
 - **On return:** exit code and run time, then files changed against the spec.
 - **Checks:** each check run, pass or fail, failure output verbatim.
 - **Open items:** anything unverified or needing Simon, and the out file's path.
@@ -110,8 +132,8 @@ spawn a Claude agent to run Codex.
 
 ## Review
 
-- **Codex build**: one fresh Opus agent (the Agent tool, `model: "opus"`)
-  reviews it; no gate.
+- **Codex build**: check the gate; `review: "opus"` means one fresh Opus agent
+  (the Agent tool, `model: "opus"`), `review: "codex"` a fresh Codex `run`.
 - **Anything else** (Claude's or a person's work): `run` the review prompt
   through Codex.
 - **Prompt file**: write it as for Codex; the Opus agent's prompt points at it.
@@ -170,3 +192,6 @@ as "in text you write", and diff-check the docs before the review.
 When the gate or a run routes to Opus, do the same work with Opus agents (the
 Agent tool, or a Workflow with `model: 'opus'`) from the same prompt file, and
 check the gate again on the next dispatch; the window resets weekly.
+
+On `stop` (exit 77), spawn no Opus agent: give Simon both readings and their
+reset times, and wait for a go-ahead. Claude's last 10% is Simon's to spend.

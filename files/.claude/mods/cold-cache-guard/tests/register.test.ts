@@ -61,6 +61,7 @@ type FixtureOptions = {
     kind?: "file" | "dir" | "other";
     skip?: string;
     rejectCompact?: boolean;
+    rejectCommand?: boolean;
     rejectToast?: boolean;
     rejectRead?: boolean;
     removeExitCode?: number;
@@ -76,6 +77,7 @@ function fixture(on: On, options: FixtureOptions = {}) {
     const submitAttempts: PromptSubmitInput[] = [];
     const toasts: string[] = [];
     const removals: string[][] = [];
+    const commands: string[] = [];
     const pending: unknown[] = [];
     let forced = options.force ?? false;
     let drops = options.dropSubmissions ?? 0;
@@ -149,6 +151,14 @@ function fixture(on: On, options: FixtureOptions = {}) {
             return options.skip === undefined ? { messages: [{ role: "user" as const, text: "Conversation summary.", toolUses: [] }] } : { skip: options.skip };
         });
     }
+    on("command.run", async ($, e, next) => {
+        calls.push("command-start");
+        commands.push(e.command);
+        if (options.rejectCommand) return next(e);
+        await Promise.resolve();
+        calls.push("command-end");
+        return {};
+    });
     on("ui.toast", ($, e) => {
         calls.push("toast");
         toasts.push(e.text);
@@ -165,12 +175,12 @@ function fixture(on: On, options: FixtureOptions = {}) {
         received.push(e);
         return { text: e.text, context: e.context, origin: e.origin };
     });
-    return { files, calls, received, submitAttempts, toasts, removals, pending, clock, forced: () => forced };
+    return { files, calls, received, submitAttempts, toasts, removals, commands, pending, clock, forced: () => forced };
 }
 
-async function start($: Engine, path = TRANSCRIPT, source: "startup" | "resume" | "clear" = "resume") {
+async function start($: Engine, path = TRANSCRIPT, source: "startup" | "resume" | "clear" = "resume", isInteractive = true) {
     await $.classic.SessionStart({ source, transcript_path: path });
-    if (source !== "clear") await $.session.start({ cwd: "/test", surface: null, isInteractive: false });
+    if (source !== "clear") await $.session.start({ cwd: "/test", surface: null, isInteractive });
 }
 
 async function submitAndRun($: Engine, f: ReturnType<typeof fixture>, original = prompt()) {
@@ -200,10 +210,33 @@ test("cold large session compacts completely before resubmitting the original te
         "compact-start", "compact-end", "next",
     ]);
     expect(f.received).toEqual([resubmitted(original)]);
+    expect(f.commands).toEqual([]);
     expect(f.toasts).toHaveLength(1);
     expect(f.toasts[0]).toMatch("idle 3h 0m");
     expect(f.toasts[0]).toMatch("~400k tokens");
     expect(f.toasts[0]).toMatch("compacting before your prompt");
+});
+
+test("a headless cold large session runs compact completely before resubmitting the original text", async ($, on) => {
+    const f = fixture(on);
+    await start($, TRANSCRIPT, "resume", false);
+    const original = prompt({ origin: { kind: "sdk" } });
+    const result = await $.prompt.submit(original);
+    expect(result.drop).toMatch(/compacting/i);
+    expect(f.received).toEqual([]);
+    expect(f.commands).toEqual([]);
+    expect(f.pending[0]).toMatchObject([{ prompt: original }]);
+    await f.clock.advance(1000);
+    expect(f.commands).toEqual(["compact"]);
+    expect(f.calls.filter((call) => call.startsWith("compact") || call.startsWith("command") || call === "next")).toEqual([
+        "command-start", "command-end", "next",
+    ]);
+    expect(f.received).toEqual([resubmitted(original)]);
+    expect(f.submitAttempts).toHaveLength(1);
+    expect(f.toasts).toHaveLength(1);
+    await f.clock.advance(5000);
+    expect(f.commands).toEqual(["compact"]);
+    expect(f.submitAttempts).toHaveLength(1);
 });
 
 for (const [name, options] of [
@@ -315,8 +348,26 @@ for (const options of [{ skip: "policy vetoed compaction" }, { rejectCompact: tr
         expect(f.toasts).toHaveLength(2);
         expect(f.toasts[1]).toMatch("skip" in options ? options.skip! : "session.compact");
         expect(f.toasts[1]).not.toMatch(/\n/);
+        expect(f.commands).toEqual([]);
     });
 }
+
+test("a rejected headless compact command reports the failure and still sends the original prompt once", async ($, on) => {
+    const f = fixture(on, { rejectCommand: true });
+    await start($, TRANSCRIPT, "resume", false);
+    const original = prompt();
+    await submitAndRun($, f, original);
+    expect(f.commands).toEqual(["compact"]);
+    expect(f.calls).not.toContain("compact-start");
+    expect(f.toasts).toHaveLength(2);
+    expect(f.toasts[1]).toMatch(/^Compaction failed: .*command.run.*; sending your prompt$/);
+    expect(f.toasts[1]).not.toMatch(/[\r\n]/);
+    expect(f.received).toEqual([resubmitted(original)]);
+    expect(f.submitAttempts).toHaveLength(1);
+    await f.clock.advance(5000);
+    expect(f.commands).toEqual(["compact"]);
+    expect(f.submitAttempts).toHaveLength(1);
+});
 
 for (const [name, options] of [
     ["missing transcript", { missing: true }],
@@ -410,7 +461,33 @@ test("a refused resubmission stays queued until one successful retry", async ($,
     expect(f.submitAttempts).toHaveLength(2);
     expect(f.calls.filter((call) => call === "compact-start")).toHaveLength(1);
     expect(f.calls.filter((call) => call === "compact-end")).toHaveLength(1);
+    expect(f.commands).toEqual([]);
 });
+
+for (const rejectCommand of [false, true]) {
+    test(`a refused headless resubmission retries without repeating the ${rejectCommand ? "rejected" : "completed"} compact command`, async ($, on) => {
+        const f = fixture(on, { dropSubmissions: 1, rejectCommand });
+        await start($, TRANSCRIPT, "resume", false);
+        const original = prompt();
+        await $.prompt.submit(original);
+        await f.clock.advance(0);
+        expect(f.received).toEqual([]);
+        expect(f.submitAttempts).toHaveLength(1);
+        expect(f.commands).toEqual(["compact"]);
+        expect(f.pending[f.pending.length - 1]).toMatchObject([{ prompt: original, compactionAttempted: true }]);
+        expect(f.toasts[f.toasts.length - 1]).toMatch("retrying automatically");
+        await f.clock.advance(1000);
+        expect(f.received).toEqual([resubmitted(original)]);
+        expect(f.submitAttempts).toHaveLength(2);
+        expect(f.pending[f.pending.length - 1]).toEqual([]);
+        await f.clock.advance(5000);
+        expect(f.submitAttempts).toHaveLength(2);
+        expect(f.commands).toEqual(["compact"]);
+        expect(f.calls.filter((call) => call === "command-start")).toHaveLength(1);
+        expect(f.calls.filter((call) => call === "command-end")).toHaveLength(rejectCommand ? 0 : 1);
+        expect(f.calls).not.toContain("compact-start");
+    });
+}
 
 test("a queue-removal failure retries cleanup without sending or compacting twice", async ($, on) => {
     const f = fixture(on, { denyRemovalOnce: true });

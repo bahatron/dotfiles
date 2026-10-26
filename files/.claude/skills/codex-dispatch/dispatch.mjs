@@ -11,8 +11,10 @@ import { homedir } from "node:os";
 import { join } from "node:path";
 
 const DEFAULT_THRESHOLD = 95;
+const DEFAULT_CLAUDE_THRESHOLD = 90;
 const EXIT_ROUTED_TO_OPUS = 75;
 const EXIT_LIMIT_HIT = 76;
+const EXIT_ROUTED_TO_STOP = 77;
 const LIMIT_PATTERN =
     /usage limit|usage_limit|rate.?limit(ed|_reached)|too many requests|insufficient_quota|\b429\b/i;
 
@@ -54,7 +56,7 @@ function codexBinary() {
     throw new Error(`codex binary not found under ${root} in bin/${directory}`);
 }
 
-export async function quota(threshold = DEFAULT_THRESHOLD) {
+async function codexUsage() {
     let started = Date.now();
     let child;
     let timer;
@@ -129,11 +131,8 @@ export async function quota(threshold = DEFAULT_THRESHOLD) {
         let used = w.usedPercent;
         let reached = typeof rl.rateLimitReachedType === "string" ? rl.rateLimitReachedType : null;
         let allowed = typeof result.ordinaryUsageAllowed === "boolean" ? result.ordinaryUsageAllowed : null;
-        let capped = used >= threshold || reached !== null || allowed === false;
         return {
-            route: capped ? "opus" : "codex",
             used_percent: used,
-            threshold,
             window_minutes: Number.isInteger(w.windowDurationMins) ? w.windowDurationMins : null,
             resets_at: Number.isInteger(w.resetsAt)
                 ? new Date(w.resetsAt * 1000).toISOString()
@@ -146,9 +145,7 @@ export async function quota(threshold = DEFAULT_THRESHOLD) {
         };
     } catch (error) {
         return {
-            route: "codex",
             used_percent: null,
-            threshold,
             error: String(error.message || error).replace(/\s+/g, " ").slice(0, 160),
         };
     } finally {
@@ -159,15 +156,117 @@ export async function quota(threshold = DEFAULT_THRESHOLD) {
     }
 }
 
+async function claudeUsage(threshold = DEFAULT_CLAUDE_THRESHOLD) {
+    let started = Date.now();
+    try {
+        let raw;
+        if (process.platform === "darwin") {
+            let login = spawnSync("security", [
+                "find-generic-password", "-s", "Claude Code-credentials", "-w",
+            ], { encoding: "utf8", timeout: 10000 });
+            if (login.status !== 0) throw new Error("Claude login could not be read");
+            raw = login.stdout;
+        } else {
+            raw = readFileSync(join(homedir(), ".claude", ".credentials.json"), "utf8");
+        }
+        let credentials;
+        try {
+            credentials = JSON.parse(raw);
+        } catch {
+            throw new Error("Claude login is not valid JSON");
+        }
+        let token = credentials?.claudeAiOauth?.accessToken;
+        if (typeof token !== "string" || !token)
+            throw new Error("Claude access token is missing");
+        let response;
+        try {
+            response = await fetch("https://api.anthropic.com/api/oauth/usage", {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    "anthropic-beta": "oauth-2025-04-20",
+                },
+                signal: AbortSignal.timeout(20000),
+            });
+        } catch {
+            throw new Error("Claude usage request failed");
+        }
+        if (!response.ok) throw new Error(String(response.status));
+        let result;
+        try {
+            result = await response.json();
+        } catch {
+            throw new Error("malformed usage response");
+        }
+        let five = result?.five_hour;
+        let seven = result?.seven_day;
+        let fiveUsed = Number.isFinite(five?.utilization) && five.utilization >= 0
+            ? five.utilization : null;
+        let sevenUsed = Number.isFinite(seven?.utilization) && seven.utilization >= 0
+            ? seven.utilization : null;
+        if (fiveUsed === null && sevenUsed === null)
+            throw new Error("malformed usage response");
+        let higher = fiveUsed !== null && (sevenUsed === null || fiveUsed >= sevenUsed)
+            ? five : seven;
+        let resets = null;
+        if (higher.resets_at !== undefined && higher.resets_at !== null) {
+            try {
+                resets = new Date(higher.resets_at).toISOString();
+            } catch {}
+        }
+        return {
+            used_percent: Math.max(fiveUsed ?? 0, sevenUsed ?? 0),
+            threshold,
+            five_hour: fiveUsed,
+            seven_day: sevenUsed,
+            resets_at: resets,
+            ms: Date.now() - started,
+        };
+    } catch (error) {
+        return {
+            used_percent: null,
+            threshold,
+            error: String(error.message || error).replace(/\s+/g, " ").slice(0, 160),
+        };
+    }
+}
+
+export function decide(codex, claude, threshold, claudeThreshold) {
+    let claudeLow = typeof claude.used_percent === "number" && claude.used_percent >= claudeThreshold;
+    let effectiveThreshold = claudeLow ? 100 : threshold;
+    let codexCapped = typeof codex.used_percent === "number" &&
+        (codex.used_percent >= effectiveThreshold ||
+            codex.limit_reached !== null || codex.usage_allowed === false);
+    return {
+        route: !codexCapped ? "codex" : claudeLow ? "stop" : "opus",
+        review: claudeLow ? "codex" : "opus",
+        threshold: effectiveThreshold,
+    };
+}
+
+export async function quota(threshold = DEFAULT_THRESHOLD, claudeThreshold = DEFAULT_CLAUDE_THRESHOLD) {
+    let [codex, claude] = await Promise.all([codexUsage(), claudeUsage(claudeThreshold)]);
+    let decision = decide(codex, claude, threshold, claudeThreshold);
+    let { used_percent, ...reading } = codex;
+    return {
+        route: decision.route,
+        review: decision.review,
+        used_percent,
+        threshold: decision.threshold,
+        ...reading,
+        claude,
+    };
+}
+
 async function run(opts) {
     for (let k of ["prompt", "sandbox", "out"])
         if (!opts[k]) fail(`--${k} is required`);
     let threshold = Number(opts.threshold ?? DEFAULT_THRESHOLD);
+    let claudeThreshold = Number(opts["claude-threshold"] ?? DEFAULT_CLAUDE_THRESHOLD);
     if (!opts["force-codex"]) {
-        let q = await quota(threshold);
-        if (q.route === "opus") {
-            emit({ route: "opus", ran: false, ...q });
-            process.exit(EXIT_ROUTED_TO_OPUS);
+        let q = await quota(threshold, claudeThreshold);
+        if (q.route === "opus" || q.route === "stop") {
+            emit({ ran: false, ...q });
+            process.exit(q.route === "stop" ? EXIT_ROUTED_TO_STOP : EXIT_ROUTED_TO_OPUS);
         }
     }
     let cwd = opts.cwd ?? process.cwd();
@@ -190,10 +289,10 @@ async function run(opts) {
     let log = `${opts.out}.log`;
     writeFileSync(log, text);
     let outExists = existsSync(opts.out) && statSync(opts.out).size > 0;
-    let after = !outExists ? await quota(threshold) : null;
+    let after = !outExists ? await quota(threshold, claudeThreshold) : null;
     let limitHit =
         !outExists &&
-        (LIMIT_PATTERN.test(text) || after.route === "opus");
+        (LIMIT_PATTERN.test(text) || after.route !== "codex");
     emit({
         route: "codex",
         ran: true,
@@ -223,9 +322,12 @@ function fail(msg) {
 
 let [cmd, ...rest] = process.argv.slice(2);
 let opts = parseArgs(rest);
-if (cmd === "quota") emit(await quota(Number(opts.threshold ?? DEFAULT_THRESHOLD)));
+if (cmd === "quota") emit(await quota(
+    Number(opts.threshold ?? DEFAULT_THRESHOLD),
+    Number(opts["claude-threshold"] ?? DEFAULT_CLAUDE_THRESHOLD),
+));
 else if (cmd === "run") await run(opts);
 else
     fail(
-        "usage: dispatch.mjs quota [--threshold N] | run --prompt FILE --sandbox MODE --out FILE [--schema FILE] [--label NAME] [--cwd DIR] [--timeout-s N] [--model M] [--threshold N] [--force-codex]",
+        "usage: dispatch.mjs quota [--threshold N] [--claude-threshold N] | run --prompt FILE --sandbox MODE --out FILE [--schema FILE] [--label NAME] [--cwd DIR] [--timeout-s N] [--model M] [--threshold N] [--claude-threshold N] [--force-codex]",
     );

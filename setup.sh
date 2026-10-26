@@ -48,6 +48,9 @@ case "$OS" in
         "$BREW" install --cask linearmouse
         # Karabiner-Elements gives Linux-style Ctrl shortcuts and Linux modifier order (decided 13-10-2026).
         # VS Code keeps its own Ctrl+R, F5 and Ctrl+G; it uses them as on Linux (decided 17-10-2026).
+        # VS Code: Ctrl+P opens Quick Open and Ctrl+Shift+P the Command Palette, as on Linux (decided 20-10-2026).
+        # Chrome: Ctrl+D sends Command+D, so Google Meet mutes and other pages bookmark, as on Linux (decided 20-10-2026).
+        # Fnatic keyboard: F1-F12 are real function keys; the MacBook top row keeps brightness and volume (decided 26-10-2026).
         # Super alone opens Mission Control and Super + the key above Tab cycles app windows, as in GNOME (decided 17-10-2026).
         # Alt + the key above Tab shows the app's windows (App Exposé) instead of cycling them (decided 17-10-2026).
         # Ctrl+Alt+T opens iTerm2 or brings it to the front, as on Ubuntu (decided 17-10-2026).
