@@ -206,6 +206,14 @@ start_linearmouse() {
     open -a LinearMouse > /dev/null 2>&1
 }
 
+handy_running() {
+    pgrep -x handy > /dev/null 2>&1
+}
+
+start_handy() {
+    open -a Handy > /dev/null 2>&1
+}
+
 if [ -d /Applications/Karabiner-Elements.app ] &&
     [ -d "$DAEMONS_APP" ] && [ -d "$AGENTS_APP" ] && [ -d "$CORE_SERVICE_APP" ]; then
     record_result ok "Karabiner installed"
@@ -256,7 +264,14 @@ else
     record_result missing "LinearMouse running" "run setup.sh first"
 fi
 
+if [ -d /Applications/Handy.app ]; then
+    check_item "Handy running" 30 handy_running start_handy "" ""
+else
+    record_result missing "Handy running" "run setup.sh first"
+fi
+
 notify "Mouse: grant LinearMouse Accessibility if it asks (Privacy & Security > Accessibility)"
+notify "Dictation: in Handy's first-run steps pick Canary 180M Flash under Compatible Models (already downloaded), grant Microphone and Accessibility, and switch on Settings > Advanced > Launch on Startup; Option+Space (Alt+Space) dictates"
 # Charge Limit stays manual because macOS has no command-line setter (decided 16-10-2026).
 notify "Battery: set Charge Limit to 80% in System Settings > Battery > (i) next to Charging"
 

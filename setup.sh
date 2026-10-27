@@ -200,6 +200,12 @@ fi
 # Kokoro-82M on macOS, Piper on Linux for now; speak-setup.sh also runs alone (decided 17-10-2026).
 "${BASEDIR}/speak-setup.sh"
 
+## Dictation: Handy with Canary
+# Handy runs Canary 180M Flash offline on macOS; handy-setup.sh also runs alone (decided 26-10-2026).
+if [ "$OS" = Darwin ]; then
+    "${BASEDIR}/handy-setup.sh"
+fi
+
 ## macOS approvals only a person can click; post-setup.sh also runs alone, without touching the dotfiles
 if [ "$OS" = Darwin ]; then
     "${BASEDIR}/post-setup.sh"
