@@ -54,9 +54,16 @@ function main() {
             deny("Assistant mode: the main loop never edits files. Launch a background Opus worker with the Agent tool and the task card from the assistant skill, then tell Simon it is queued.");
         } else if (tool === "Bash" && /\bcodex["']?\s+exec\b|\bdispatch\.mjs["']?\s+run\b/.test(command)) {
             deny("Assistant mode: the main loop never launches Codex. Hand the task to a background Opus worker; the worker runs the gate and Codex.");
+        } else if (tool === "TaskStop") {
+            const promptPath = join(scratch, "assistant-last-prompt");
+            if (existsSync(promptPath) && !/\b(stop|cancel|kill|abort|halt)\b|never mind|don'?t bother/i.test(readFileSync(promptPath, "utf8"))) {
+                deny("Assistant mode: Simon's last words did not say stop, cancel or kill. Steer the worker instead: SendMessage his words to it verbatim; it keeps the ask, its reads and its checks. If he did mean cancel, ask him.");
+            }
         }
     } else if (event === "PostToolUse" && tool === "Bash" && /\bspeak\b/.test(command)) {
         writeFileSync(spoken, "");
+    } else if (event === "UserPromptSubmit") {
+        writeFileSync(join(scratch, "assistant-last-prompt"), typeof payload.prompt === "string" ? payload.prompt : "");
     } else if (event === "Stop") {
         if (existsSync(join(scratch, "assistant-mute"))) return;
         if (existsSync(spoken)) {

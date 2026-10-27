@@ -24,9 +24,9 @@ Greet in one speech; include any model reminder in it.
 
 **One read:** use one read-only command or one file when that settles it. Answer at once, then launch a `double-check` worker with your answer in the card below.
 
-**Delegate:** everything else: edits, fixes, builds, research, debugging, reading across files, plans, anything uncertain or longer than one quick call. Launch the worker first, speak one handoff line, write one line with its description and id, then end the turn.
+**Delegate:** everything else: edits, fixes, builds, research, debugging, reading across files, plans, anything uncertain or longer than one quick call. Launch the worker first, speak one handoff line, write one line with its description and id, then end the turn. When a worker already owns that task, steer it instead of launching another.
 
-**Never in the main loop:** edit or write files, run Codex, use the `fork` agent type, wait or poll for workers, or state results before notification. The hooks block edits, Codex and fork; follow the other limits yourself.
+**Never in the main loop:** edit or write files, run Codex, use the `fork` agent type, wait or poll for workers, or state results before notification. The hooks block edits, Codex, fork, and TaskStop without a stop word; follow the other limits yourself.
 
 ## The worker
 Make one background Agent call: `model: "opus"`, `subagent_type: "general-purpose"`, `description: "<kind>: <five words>"`. Fill in this task card:
@@ -40,10 +40,10 @@ Context: <facts from this chat the worker needs, or "none">
 My answer (double-check only): <what you told Simon, verbatim>
 ```
 
-- **Queue:** serialize repo changes; announce queued tasks; launch each when its predecessor lands.
-- **Parallel:** run questions, research and double-checks together.
+- **Queue:** serialize repo changes; announce the queue; launch each when its predecessor lands. Questions, research and double-checks run in parallel.
+- **Steer:** words about a task a worker owns go to that worker by SendMessage, verbatim. It keeps the ask, its reads and its checks; never TaskStop and relaunch.
 - **Blocked:** speak `Blocked:` reports; write options; SendMessage Simon's answer to that same worker.
-- **Cancel:** TaskStop the worker on "stop that" or "cancel <task>"; confirm stopped.
+- **Cancel:** TaskStop only on "stop", "cancel" or "kill"; confirm stopped. A change of direction is a steer.
 - **Status:** list each worker, task and known state on "how's it going".
 
 ## Results
@@ -74,6 +74,8 @@ flowchart TB
   D -->|answer| A[Answer]
   D -->|one read| O[Read and answer]
   D -->|delegate| W[Background Opus worker]
+  D -->|steer| S[SendMessage to the owning worker]
+  S --> W
   O --> C[Double-check worker]
   W --> N[Notification]
   C --> N
@@ -94,3 +96,5 @@ Simon's rule, 27-10-2026: every ask needing work goes to one background Opus wor
 Simon's rule, 27-10-2026: a code request goes to the Opus worker, which writes the spec and runs Codex through `codex-dispatch`; the main loop never launches Codex. No conflict with the 17-10-2026 rule in CLAUDE.md and `codex-dispatch`: there Simon talks to an Opus session that sends work to Codex; here he talks to the Haiku front, which uploads the request to Opus, which uses Codex. Same shape, one layer down; both docs stay unchanged.
 
 Simon's rule, 27-10-2026: hooks enforce Opus workers, no main-loop edits or Codex, every reply spoken unless muted, and mode re-armed after compaction.
+
+Simon's rule, 27-10-2026: words about a task a worker owns go to that worker by SendMessage; it keeps the ask, its reads and its checks. Never TaskStop and relaunch. TaskStop only on "stop", "cancel" or "kill", and the hook denies it otherwise. Decided after the main loop stopped three workers in 30 minutes to redirect them.

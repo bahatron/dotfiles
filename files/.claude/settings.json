@@ -13,7 +13,7 @@
     ],
     "defaultMode": "bypassPermissions"
   },
-  "model": "fable",
+  "model": "opus",
   "hooks": {
     "SessionStart": [
       {
@@ -29,7 +29,7 @@
     ],
     "PreToolUse": [
       {
-        "matcher": "Agent|Edit|Write|MultiEdit|NotebookEdit|Bash",
+        "matcher": "Agent|Edit|Write|MultiEdit|NotebookEdit|Bash|TaskStop",
         "hooks": [
           {
             "type": "command",
@@ -42,6 +42,17 @@
     "PostToolUse": [
       {
         "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$HOME/.claude/skills/assistant/hook.mjs\"",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
         "hooks": [
           {
             "type": "command",
