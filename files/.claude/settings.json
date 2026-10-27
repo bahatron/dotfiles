@@ -13,8 +13,55 @@
     ],
     "defaultMode": "bypassPermissions"
   },
-  "model": "opus",
+  "model": "fable",
   "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "compact|resume|startup",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$HOME/.claude/skills/assistant/hook.mjs\"",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Agent|Edit|Write|MultiEdit|NotebookEdit|Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$HOME/.claude/skills/assistant/hook.mjs\"",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$HOME/.claude/skills/assistant/hook.mjs\"",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$HOME/.claude/skills/assistant/hook.mjs\"",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
     "PermissionRequest": [
       {
         "hooks": [
@@ -41,11 +88,14 @@
   "outputStyle": "Concise",
   "alwaysThinkingEnabled": true,
   "modelSettings": {
-    "claude-opus-5": {},
-    "claude-fable-5-1[1m]": {},
-    "claude-fable-5-1": {},
+    "claude-opus": {},
+    "claude-fable": {},
+    "claude-haiku-5-5": {
+      "effortLevel": "low",
+      "maxEffortLevel": "low"
+    },
     "claude-opus-5-5": {
-      "effortLevel": "low"
+      "effortLevel": "xhigh"
     }
   },
   "tui": "fullscreen",
