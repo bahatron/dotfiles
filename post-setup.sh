@@ -194,8 +194,8 @@ services_running() {
         "$AGENTS_BIN" running > /dev/null 2>&1
 }
 
-british_pc_ok() {
-    defaults read com.apple.HIToolbox AppleEnabledInputSources 2> /dev/null | grep -Fq British-PC
+british_ok() {
+    defaults read com.apple.HIToolbox AppleEnabledInputSources 2> /dev/null | grep -Fq '"KeyboardLayout Name" = British;'
 }
 
 linearmouse_running() {
@@ -255,8 +255,8 @@ else
 fi
 KARABINER_OK=$ALL_OK
 
-check_item "British - PC input source" "$WAIT_SECONDS" british_pc_ok : "$KEYBOARD_PANE" \
-    "In Keyboard > Text Input > Input Sources > Edit, click + and add English > British - PC (matches Linux gb)"
+check_item "British input source" "$WAIT_SECONDS" british_ok : "$KEYBOARD_PANE" \
+    "In Keyboard > Text Input > Input Sources > Edit, click + and add English > British (matches the MacBook's printed keys)"
 
 if [ -d /Applications/LinearMouse.app ]; then
     check_item "LinearMouse running" 30 linearmouse_running start_linearmouse "" ""

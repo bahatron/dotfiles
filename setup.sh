@@ -43,19 +43,34 @@ case "$OS" in
         fi
         "$BREW" install git htop node direnv
         "$BREW" install --cask iterm2
+        # iTerm2 skips its quit prompts on shutdown, restart and logout; Cmd+Q and busy tabs still ask (decided 04-11-2026).
+        defaults write com.googlecode.iterm2 NeverBlockSystemShutdown -bool true
         # LinearMouse reverses the wheel for mice only; the trackpad keeps the macOS default (decided 13-10-2026).
         # LinearMouse also turns off pointer acceleration for mice only, a flat profile as on Linux (decided 17-10-2026).
         "$BREW" install --cask linearmouse
         # Karabiner-Elements gives Linux-style Ctrl shortcuts and Linux modifier order (decided 13-10-2026).
+        # Only while the Fnatic keyboard is plugged in; without it Karabiner changes no keys and the MacBook keyboard follows the layout set in macOS (decided 10-11-2026).
+        # Each rule checks for the Fnatic itself: Karabiner's own virtual keyboard and the Rival 600 mouse also count as keyboards, so "any external keyboard" always matches (decided 10-11-2026).
+        # The Mac uses Apple's British input source, so the MacBook keyboard types what is printed on it (decided 10-11-2026).
+        # On British, Karabiner makes the Fnatic's UK PC keys type as printed (` ¬ \ | # ~ " @, AltGr+4 €); on British - PC, which already matches them, that rule steps aside (decided 10-11-2026).
         # VS Code keeps its own Ctrl+R, F5 and Ctrl+G; it uses them as on Linux (decided 17-10-2026).
         # VS Code: Ctrl+P opens Quick Open and Ctrl+Shift+P the Command Palette, as on Linux (decided 20-10-2026).
+        # VS Code: Ctrl+/ toggles line comments on the selection, as on Linux (decided 04-11-2026).
+        # VS Code: Ctrl+D adds the next match and Ctrl+Shift+L selects every match, as on Linux (decided 04-11-2026).
+        # VS Code: Ctrl+H opens find and replace and Ctrl+Shift+H replace in files, as on Linux (decided 04-11-2026).
+        # Terminals and VS Code: Ctrl+Shift+C/V copy and paste, as in Linux terminals (decided 04-11-2026).
+        # Other apps: Ctrl+Shift+V pastes without formatting (Paste and Match Style), as on Linux (decided 04-11-2026).
         # Chrome: Ctrl+D sends Command+D, so Google Meet mutes and other pages bookmark, as on Linux (decided 20-10-2026).
         # Fnatic keyboard: F1-F12 are real function keys; the MacBook top row keeps brightness and volume (decided 26-10-2026).
         # Super alone opens Mission Control and Super + the key above Tab cycles app windows, as in GNOME (decided 17-10-2026).
+        # On British, Command + ` cycles app windows with macOS's own shortcut: the key left of Z on the MacBook, the key above Tab on the Fnatic (decided 10-11-2026).
+        # Karabiner's Command + key-left-of-Z window remap runs only on British - PC; on British it would turn Command+` into Command+§ (decided 10-11-2026).
         # Alt + the key above Tab shows the app's windows (App Exposé) instead of cycling them (decided 17-10-2026).
         # Ctrl+Alt+T opens iTerm2 or brings it to the front, as on Ubuntu (decided 17-10-2026).
         # Print Screen starts an area capture (Command+Shift+4), not the screenshot toolbar (decided 19-10-2026).
         "$BREW" install --cask karabiner-elements
+        # Raycast is the launcher. setup.sh only installs it: the hotkey, Spotlight replacement and extensions are set by hand on first run (decided 12-11-2026).
+        "$BREW" install --cask raycast
         ;;
 esac
 

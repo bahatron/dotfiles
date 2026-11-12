@@ -173,6 +173,16 @@
                                                 "is_built_in_keyboard": true
                                             }
                                         ]
+                                    },
+                                    {
+                                        "type": "device_exists_if",
+                                        "identifiers": [
+                                            {
+                                                "vendor_id": 12046,
+                                                "product_id": 258,
+                                                "description": "Fnatic Gear miniSTREAK"
+                                            }
+                                        ]
                                     }
                                 ],
                                 "to_if_alone": [
@@ -207,6 +217,16 @@
                                                 "is_built_in_keyboard": true
                                             }
                                         ]
+                                    },
+                                    {
+                                        "type": "device_exists_if",
+                                        "identifiers": [
+                                            {
+                                                "vendor_id": 12046,
+                                                "product_id": 258,
+                                                "description": "Fnatic Gear miniSTREAK"
+                                            }
+                                        ]
                                     }
                                 ]
                             },
@@ -233,6 +253,16 @@
                                                 "is_built_in_keyboard": true
                                             }
                                         ]
+                                    },
+                                    {
+                                        "type": "device_exists_if",
+                                        "identifiers": [
+                                            {
+                                                "vendor_id": 12046,
+                                                "product_id": 258,
+                                                "description": "Fnatic Gear miniSTREAK"
+                                            }
+                                        ]
                                     }
                                 ]
                             },
@@ -257,6 +287,16 @@
                                         "identifiers": [
                                             {
                                                 "is_built_in_keyboard": true
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "type": "device_exists_if",
+                                        "identifiers": [
+                                            {
+                                                "vendor_id": 12046,
+                                                "product_id": 258,
+                                                "description": "Fnatic Gear miniSTREAK"
                                             }
                                         ]
                                     }
@@ -298,6 +338,16 @@
                                                 "is_built_in_keyboard": true
                                             }
                                         ]
+                                    },
+                                    {
+                                        "type": "device_exists_if",
+                                        "identifiers": [
+                                            {
+                                                "vendor_id": 12046,
+                                                "product_id": 258,
+                                                "description": "Fnatic Gear miniSTREAK"
+                                            }
+                                        ]
                                     }
                                 ]
                             },
@@ -318,6 +368,18 @@
                                             "left_control"
                                         ]
                                     }
+                                ],
+                                "conditions": [
+                                    {
+                                        "type": "device_exists_if",
+                                        "identifiers": [
+                                            {
+                                                "vendor_id": 12046,
+                                                "product_id": 258,
+                                                "description": "Fnatic Gear miniSTREAK"
+                                            }
+                                        ]
+                                    }
                                 ]
                             },
                             {
@@ -335,6 +397,18 @@
                                         "key_code": "down_arrow",
                                         "modifiers": [
                                             "left_control"
+                                        ]
+                                    }
+                                ],
+                                "conditions": [
+                                    {
+                                        "type": "device_exists_if",
+                                        "identifiers": [
+                                            {
+                                                "vendor_id": 12046,
+                                                "product_id": 258,
+                                                "description": "Fnatic Gear miniSTREAK"
+                                            }
                                         ]
                                     }
                                 ]
@@ -357,6 +431,26 @@
                                         "key_code": "grave_accent_and_tilde",
                                         "modifiers": [
                                             "left_command"
+                                        ]
+                                    }
+                                ],
+                                "conditions": [
+                                    {
+                                        "type": "input_source_if",
+                                        "input_sources": [
+                                            {
+                                                "input_source_id": "^com\\.apple\\.keylayout\\.British-PC$"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "type": "device_exists_if",
+                                        "identifiers": [
+                                            {
+                                                "vendor_id": 12046,
+                                                "product_id": 258,
+                                                "description": "Fnatic Gear miniSTREAK"
+                                            }
                                         ]
                                     }
                                 ]
@@ -384,6 +478,18 @@
                                                 "bundle_identifier": "com.googlecode.iterm2"
                                             }
                                         }
+                                    }
+                                ],
+                                "conditions": [
+                                    {
+                                        "type": "device_exists_if",
+                                        "identifiers": [
+                                            {
+                                                "vendor_id": 12046,
+                                                "product_id": 258,
+                                                "description": "Fnatic Gear miniSTREAK"
+                                            }
+                                        ]
                                     }
                                 ]
                             }
@@ -447,6 +553,16 @@
                                             "^org\\.gnu\\.Aquamacs$",
                                             "^org\\.pqrs\\.unknownapp\\.conkeror$"
                                         ]
+                                    },
+                                    {
+                                        "type": "device_exists_if",
+                                        "identifiers": [
+                                            {
+                                                "vendor_id": 12046,
+                                                "product_id": 258,
+                                                "description": "Fnatic Gear miniSTREAK"
+                                            }
+                                        ]
                                     }
                                 ]
                             }
@@ -499,6 +615,16 @@
                                             "^com\\.parallels\\.winapp\\.",
                                             "^com\\.utmapp\\.UTM$"
                                         ]
+                                    },
+                                    {
+                                        "type": "device_exists_if",
+                                        "identifiers": [
+                                            {
+                                                "vendor_id": 12046,
+                                                "product_id": 258,
+                                                "description": "Fnatic Gear miniSTREAK"
+                                            }
+                                        ]
                                     }
                                 ]
                             }
@@ -534,6 +660,399 @@
                                         "bundle_identifiers": [
                                             "^com\\.microsoft\\.VSCode"
                                         ]
+                                    },
+                                    {
+                                        "type": "device_exists_if",
+                                        "identifiers": [
+                                            {
+                                                "vendor_id": 12046,
+                                                "product_id": 258,
+                                                "description": "Fnatic Gear miniSTREAK"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "description": "Linux-style VS Code: Ctrl+/ toggles line comments (Command+/)",
+                        "manipulators": [
+                            {
+                                "type": "basic",
+                                "from": {
+                                    "key_code": "slash",
+                                    "modifiers": {
+                                        "mandatory": [
+                                            "control"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "slash",
+                                        "modifiers": [
+                                            "left_command"
+                                        ]
+                                    }
+                                ],
+                                "conditions": [
+                                    {
+                                        "type": "frontmost_application_if",
+                                        "bundle_identifiers": [
+                                            "^com\\.microsoft\\.VSCode"
+                                        ]
+                                    },
+                                    {
+                                        "type": "device_exists_if",
+                                        "identifiers": [
+                                            {
+                                                "vendor_id": 12046,
+                                                "product_id": 258,
+                                                "description": "Fnatic Gear miniSTREAK"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "description": "Linux-style VS Code: Ctrl+D adds the next match, Ctrl+Shift+L selects every match (Command+D, Command+Shift+L)",
+                        "manipulators": [
+                            {
+                                "type": "basic",
+                                "from": {
+                                    "key_code": "d",
+                                    "modifiers": {
+                                        "mandatory": [
+                                            "control"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "d",
+                                        "modifiers": [
+                                            "left_command"
+                                        ]
+                                    }
+                                ],
+                                "conditions": [
+                                    {
+                                        "type": "frontmost_application_if",
+                                        "bundle_identifiers": [
+                                            "^com\\.microsoft\\.VSCode"
+                                        ]
+                                    },
+                                    {
+                                        "type": "device_exists_if",
+                                        "identifiers": [
+                                            {
+                                                "vendor_id": 12046,
+                                                "product_id": 258,
+                                                "description": "Fnatic Gear miniSTREAK"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "basic",
+                                "from": {
+                                    "key_code": "l",
+                                    "modifiers": {
+                                        "mandatory": [
+                                            "control",
+                                            "shift"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "l",
+                                        "modifiers": [
+                                            "left_command",
+                                            "left_shift"
+                                        ]
+                                    }
+                                ],
+                                "conditions": [
+                                    {
+                                        "type": "frontmost_application_if",
+                                        "bundle_identifiers": [
+                                            "^com\\.microsoft\\.VSCode"
+                                        ]
+                                    },
+                                    {
+                                        "type": "device_exists_if",
+                                        "identifiers": [
+                                            {
+                                                "vendor_id": 12046,
+                                                "product_id": 258,
+                                                "description": "Fnatic Gear miniSTREAK"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "description": "Linux-style VS Code: Ctrl+H finds and replaces, Ctrl+Shift+H replaces in files (Command+Option+F, Command+Shift+H)",
+                        "manipulators": [
+                            {
+                                "type": "basic",
+                                "from": {
+                                    "key_code": "h",
+                                    "modifiers": {
+                                        "mandatory": [
+                                            "control"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "f",
+                                        "modifiers": [
+                                            "left_command",
+                                            "left_option"
+                                        ]
+                                    }
+                                ],
+                                "conditions": [
+                                    {
+                                        "type": "frontmost_application_if",
+                                        "bundle_identifiers": [
+                                            "^com\\.microsoft\\.VSCode"
+                                        ]
+                                    },
+                                    {
+                                        "type": "device_exists_if",
+                                        "identifiers": [
+                                            {
+                                                "vendor_id": 12046,
+                                                "product_id": 258,
+                                                "description": "Fnatic Gear miniSTREAK"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "basic",
+                                "from": {
+                                    "key_code": "h",
+                                    "modifiers": {
+                                        "mandatory": [
+                                            "control",
+                                            "shift"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "h",
+                                        "modifiers": [
+                                            "left_command",
+                                            "left_shift"
+                                        ]
+                                    }
+                                ],
+                                "conditions": [
+                                    {
+                                        "type": "frontmost_application_if",
+                                        "bundle_identifiers": [
+                                            "^com\\.microsoft\\.VSCode"
+                                        ]
+                                    },
+                                    {
+                                        "type": "device_exists_if",
+                                        "identifiers": [
+                                            {
+                                                "vendor_id": 12046,
+                                                "product_id": 258,
+                                                "description": "Fnatic Gear miniSTREAK"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "description": "Linux-style terminal copy/paste: Ctrl+Shift+C/V as Command+C/V in terminals and VS Code",
+                        "manipulators": [
+                            {
+                                "type": "basic",
+                                "from": {
+                                    "key_code": "c",
+                                    "modifiers": {
+                                        "mandatory": [
+                                            "control",
+                                            "shift"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "c",
+                                        "modifiers": [
+                                            "left_command"
+                                        ]
+                                    }
+                                ],
+                                "conditions": [
+                                    {
+                                        "type": "frontmost_application_if",
+                                        "bundle_identifiers": [
+                                            "^com\\.apple\\.Terminal$",
+                                            "^com\\.googlecode\\.iterm2$",
+                                            "^co\\.zeit\\.hyperterm$",
+                                            "^co\\.zeit\\.hyper$",
+                                            "^io\\.alacritty$",
+                                            "^org\\.alacritty$",
+                                            "^net\\.kovidgoyal\\.kitty$",
+                                            "^com\\.mitchellh\\.ghostty$",
+                                            "^com\\.microsoft\\.VSCode"
+                                        ]
+                                    },
+                                    {
+                                        "type": "device_exists_if",
+                                        "identifiers": [
+                                            {
+                                                "vendor_id": 12046,
+                                                "product_id": 258,
+                                                "description": "Fnatic Gear miniSTREAK"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "basic",
+                                "from": {
+                                    "key_code": "v",
+                                    "modifiers": {
+                                        "mandatory": [
+                                            "control",
+                                            "shift"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "v",
+                                        "modifiers": [
+                                            "left_command"
+                                        ]
+                                    }
+                                ],
+                                "conditions": [
+                                    {
+                                        "type": "frontmost_application_if",
+                                        "bundle_identifiers": [
+                                            "^com\\.apple\\.Terminal$",
+                                            "^com\\.googlecode\\.iterm2$",
+                                            "^co\\.zeit\\.hyperterm$",
+                                            "^co\\.zeit\\.hyper$",
+                                            "^io\\.alacritty$",
+                                            "^org\\.alacritty$",
+                                            "^net\\.kovidgoyal\\.kitty$",
+                                            "^com\\.mitchellh\\.ghostty$",
+                                            "^com\\.microsoft\\.VSCode"
+                                        ]
+                                    },
+                                    {
+                                        "type": "device_exists_if",
+                                        "identifiers": [
+                                            {
+                                                "vendor_id": 12046,
+                                                "product_id": 258,
+                                                "description": "Fnatic Gear miniSTREAK"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "description": "Linux-style plain paste: Ctrl+Shift+V pastes without formatting (Command+Option+Shift+V, Paste and Match Style)",
+                        "manipulators": [
+                            {
+                                "type": "basic",
+                                "from": {
+                                    "key_code": "v",
+                                    "modifiers": {
+                                        "mandatory": [
+                                            "control",
+                                            "shift"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "v",
+                                        "modifiers": [
+                                            "left_command",
+                                            "left_option",
+                                            "left_shift"
+                                        ]
+                                    }
+                                ],
+                                "conditions": [
+                                    {
+                                        "type": "frontmost_application_unless",
+                                        "bundle_identifiers": [
+                                            "^com\\.microsoft\\.rdc$",
+                                            "^com\\.microsoft\\.rdc\\.",
+                                            "^net\\.sf\\.cord$",
+                                            "^com\\.thinomenon\\.RemoteDesktopConnection$",
+                                            "^com\\.itap-mobile\\.qmote$",
+                                            "^com\\.nulana\\.remotixmac$",
+                                            "^com\\.p5sys\\.jump\\.mac\\.viewer$",
+                                            "^com\\.p5sys\\.jump\\.mac\\.viewer\\.",
+                                            "^com\\.teamviewer\\.TeamViewer$",
+                                            "^com\\.vmware\\.horizon$",
+                                            "^com\\.2X\\.Client\\.Mac$",
+                                            "^com\\.OpenText\\.Exceed-TurboX-Client$",
+                                            "^com\\.realvnc\\.vncviewer$",
+                                            "^com\\.citrix\\.receiver\\.icaviewer",
+                                            "^com\\.vmware\\.fusion$",
+                                            "^com\\.vmware\\.horizon$",
+                                            "^com\\.vmware\\.view$",
+                                            "^com\\.parallels\\.desktop$",
+                                            "^com\\.parallels\\.vm$",
+                                            "^com\\.parallels\\.desktop\\.console$",
+                                            "^org\\.virtualbox\\.app\\.VirtualBoxVM$",
+                                            "^com\\.citrix\\.XenAppViewer$",
+                                            "^com\\.vmware\\.proxyApp\\.",
+                                            "^com\\.parallels\\.winapp\\.",
+                                            "^com\\.utmapp\\.UTM$",
+                                            "^com\\.apple\\.Terminal$",
+                                            "^com\\.googlecode\\.iterm2$",
+                                            "^co\\.zeit\\.hyperterm$",
+                                            "^co\\.zeit\\.hyper$",
+                                            "^io\\.alacritty$",
+                                            "^org\\.alacritty$",
+                                            "^net\\.kovidgoyal\\.kitty$",
+                                            "^com\\.mitchellh\\.ghostty$",
+                                            "^org\\.gnu\\.Emacs$",
+                                            "^org\\.gnu\\.AquamacsEmacs$",
+                                            "^org\\.gnu\\.Aquamacs$",
+                                            "^org\\.pqrs\\.unknownapp\\.conkeror$"
+                                        ]
+                                    },
+                                    {
+                                        "type": "device_exists_if",
+                                        "identifiers": [
+                                            {
+                                                "vendor_id": 12046,
+                                                "product_id": 258,
+                                                "description": "Fnatic Gear miniSTREAK"
+                                            }
+                                        ]
                                     }
                                 ]
                             }
@@ -565,6 +1084,16 @@
                                         "type": "frontmost_application_if",
                                         "bundle_identifiers": [
                                             "^com\\.google\\.Chrome"
+                                        ]
+                                    },
+                                    {
+                                        "type": "device_exists_if",
+                                        "identifiers": [
+                                            {
+                                                "vendor_id": 12046,
+                                                "product_id": 258,
+                                                "description": "Fnatic Gear miniSTREAK"
+                                            }
                                         ]
                                     }
                                 ]
@@ -644,6 +1173,16 @@
                                             "^org\\.gnu\\.Aquamacs$",
                                             "^org\\.pqrs\\.unknownapp\\.conkeror$"
                                         ]
+                                    },
+                                    {
+                                        "type": "device_exists_if",
+                                        "identifiers": [
+                                            {
+                                                "vendor_id": 12046,
+                                                "product_id": 258,
+                                                "description": "Fnatic Gear miniSTREAK"
+                                            }
+                                        ]
                                     }
                                 ]
                             },
@@ -677,6 +1216,16 @@
                                             "^com\\.google\\.Chrome$",
                                             "^com\\.brave\\.Browser$",
                                             "^com\\.apple\\.Safari$"
+                                        ]
+                                    },
+                                    {
+                                        "type": "device_exists_if",
+                                        "identifiers": [
+                                            {
+                                                "vendor_id": 12046,
+                                                "product_id": 258,
+                                                "description": "Fnatic Gear miniSTREAK"
+                                            }
                                         ]
                                     }
                                 ]
@@ -745,6 +1294,16 @@
                                             "^org\\.gnu\\.AquamacsEmacs$",
                                             "^org\\.gnu\\.Aquamacs$",
                                             "^org\\.pqrs\\.unknownapp\\.conkeror$"
+                                        ]
+                                    },
+                                    {
+                                        "type": "device_exists_if",
+                                        "identifiers": [
+                                            {
+                                                "vendor_id": 12046,
+                                                "product_id": 258,
+                                                "description": "Fnatic Gear miniSTREAK"
+                                            }
                                         ]
                                     }
                                 ]
@@ -819,6 +1378,16 @@
                                             "^org\\.gnu\\.Aquamacs$",
                                             "^org\\.pqrs\\.unknownapp\\.conkeror$"
                                         ]
+                                    },
+                                    {
+                                        "type": "device_exists_if",
+                                        "identifiers": [
+                                            {
+                                                "vendor_id": 12046,
+                                                "product_id": 258,
+                                                "description": "Fnatic Gear miniSTREAK"
+                                            }
+                                        ]
                                     }
                                 ]
                             },
@@ -852,6 +1421,16 @@
                                             "^com\\.google\\.Chrome$",
                                             "^com\\.brave\\.Browser$",
                                             "^com\\.apple\\.Safari$"
+                                        ]
+                                    },
+                                    {
+                                        "type": "device_exists_if",
+                                        "identifiers": [
+                                            {
+                                                "vendor_id": 12046,
+                                                "product_id": 258,
+                                                "description": "Fnatic Gear miniSTREAK"
+                                            }
                                         ]
                                     }
                                 ]
@@ -921,6 +1500,16 @@
                                             "^org\\.gnu\\.Aquamacs$",
                                             "^org\\.pqrs\\.unknownapp\\.conkeror$"
                                         ]
+                                    },
+                                    {
+                                        "type": "device_exists_if",
+                                        "identifiers": [
+                                            {
+                                                "vendor_id": 12046,
+                                                "product_id": 258,
+                                                "description": "Fnatic Gear miniSTREAK"
+                                            }
+                                        ]
                                     }
                                 ]
                             }
@@ -947,6 +1536,18 @@
                                         "key_code": "tab",
                                         "modifiers": [
                                             "left_command"
+                                        ]
+                                    }
+                                ],
+                                "conditions": [
+                                    {
+                                        "type": "device_exists_if",
+                                        "identifiers": [
+                                            {
+                                                "vendor_id": 12046,
+                                                "product_id": 258,
+                                                "description": "Fnatic Gear miniSTREAK"
+                                            }
                                         ]
                                     }
                                 ]
@@ -1019,6 +1620,16 @@
                                             "^org\\.gnu\\.Aquamacs$",
                                             "^org\\.pqrs\\.unknownapp\\.conkeror$"
                                         ]
+                                    },
+                                    {
+                                        "type": "device_exists_if",
+                                        "identifiers": [
+                                            {
+                                                "vendor_id": 12046,
+                                                "product_id": 258,
+                                                "description": "Fnatic Gear miniSTREAK"
+                                            }
+                                        ]
                                     }
                                 ]
                             },
@@ -1084,6 +1695,16 @@
                                             "^org\\.gnu\\.AquamacsEmacs$",
                                             "^org\\.gnu\\.Aquamacs$",
                                             "^org\\.pqrs\\.unknownapp\\.conkeror$"
+                                        ]
+                                    },
+                                    {
+                                        "type": "device_exists_if",
+                                        "identifiers": [
+                                            {
+                                                "vendor_id": 12046,
+                                                "product_id": 258,
+                                                "description": "Fnatic Gear miniSTREAK"
+                                            }
                                         ]
                                     }
                                 ]
@@ -1151,6 +1772,16 @@
                                             "^org\\.gnu\\.Aquamacs$",
                                             "^org\\.pqrs\\.unknownapp\\.conkeror$"
                                         ]
+                                    },
+                                    {
+                                        "type": "device_exists_if",
+                                        "identifiers": [
+                                            {
+                                                "vendor_id": 12046,
+                                                "product_id": 258,
+                                                "description": "Fnatic Gear miniSTREAK"
+                                            }
+                                        ]
                                     }
                                 ]
                             },
@@ -1216,6 +1847,16 @@
                                             "^org\\.gnu\\.AquamacsEmacs$",
                                             "^org\\.gnu\\.Aquamacs$",
                                             "^org\\.pqrs\\.unknownapp\\.conkeror$"
+                                        ]
+                                    },
+                                    {
+                                        "type": "device_exists_if",
+                                        "identifiers": [
+                                            {
+                                                "vendor_id": 12046,
+                                                "product_id": 258,
+                                                "description": "Fnatic Gear miniSTREAK"
+                                            }
                                         ]
                                     }
                                 ]
@@ -1288,6 +1929,16 @@
                                             "^org\\.gnu\\.Aquamacs$",
                                             "^org\\.pqrs\\.unknownapp\\.conkeror$"
                                         ]
+                                    },
+                                    {
+                                        "type": "device_exists_if",
+                                        "identifiers": [
+                                            {
+                                                "vendor_id": 12046,
+                                                "product_id": 258,
+                                                "description": "Fnatic Gear miniSTREAK"
+                                            }
+                                        ]
                                     }
                                 ]
                             },
@@ -1354,6 +2005,16 @@
                                             "^org\\.gnu\\.Aquamacs$",
                                             "^org\\.pqrs\\.unknownapp\\.conkeror$"
                                         ]
+                                    },
+                                    {
+                                        "type": "device_exists_if",
+                                        "identifiers": [
+                                            {
+                                                "vendor_id": 12046,
+                                                "product_id": 258,
+                                                "description": "Fnatic Gear miniSTREAK"
+                                            }
+                                        ]
                                     }
                                 ]
                             },
@@ -1419,6 +2080,16 @@
                                             "^org\\.gnu\\.AquamacsEmacs$",
                                             "^org\\.gnu\\.Aquamacs$",
                                             "^org\\.pqrs\\.unknownapp\\.conkeror$"
+                                        ]
+                                    },
+                                    {
+                                        "type": "device_exists_if",
+                                        "identifiers": [
+                                            {
+                                                "vendor_id": 12046,
+                                                "product_id": 258,
+                                                "description": "Fnatic Gear miniSTREAK"
+                                            }
                                         ]
                                     }
                                 ]
@@ -1490,6 +2161,16 @@
                                             "^org\\.gnu\\.AquamacsEmacs$",
                                             "^org\\.gnu\\.Aquamacs$",
                                             "^org\\.pqrs\\.unknownapp\\.conkeror$"
+                                        ]
+                                    },
+                                    {
+                                        "type": "device_exists_if",
+                                        "identifiers": [
+                                            {
+                                                "vendor_id": 12046,
+                                                "product_id": 258,
+                                                "description": "Fnatic Gear miniSTREAK"
+                                            }
                                         ]
                                     }
                                 ]
@@ -1563,6 +2244,16 @@
                                             "^org\\.gnu\\.Aquamacs$",
                                             "^org\\.pqrs\\.unknownapp\\.conkeror$"
                                         ]
+                                    },
+                                    {
+                                        "type": "device_exists_if",
+                                        "identifiers": [
+                                            {
+                                                "vendor_id": 12046,
+                                                "product_id": 258,
+                                                "description": "Fnatic Gear miniSTREAK"
+                                            }
+                                        ]
                                     }
                                 ]
                             }
@@ -1633,6 +2324,16 @@
                                             "^org\\.gnu\\.AquamacsEmacs$",
                                             "^org\\.gnu\\.Aquamacs$",
                                             "^org\\.pqrs\\.unknownapp\\.conkeror$"
+                                        ]
+                                    },
+                                    {
+                                        "type": "device_exists_if",
+                                        "identifiers": [
+                                            {
+                                                "vendor_id": 12046,
+                                                "product_id": 258,
+                                                "description": "Fnatic Gear miniSTREAK"
+                                            }
                                         ]
                                     }
                                 ]
@@ -1705,6 +2406,16 @@
                                             "^org\\.gnu\\.Aquamacs$",
                                             "^org\\.pqrs\\.unknownapp\\.conkeror$"
                                         ]
+                                    },
+                                    {
+                                        "type": "device_exists_if",
+                                        "identifiers": [
+                                            {
+                                                "vendor_id": 12046,
+                                                "product_id": 258,
+                                                "description": "Fnatic Gear miniSTREAK"
+                                            }
+                                        ]
                                     }
                                 ]
                             }
@@ -1775,6 +2486,16 @@
                                             "^org\\.gnu\\.AquamacsEmacs$",
                                             "^org\\.gnu\\.Aquamacs$",
                                             "^org\\.pqrs\\.unknownapp\\.conkeror$"
+                                        ]
+                                    },
+                                    {
+                                        "type": "device_exists_if",
+                                        "identifiers": [
+                                            {
+                                                "vendor_id": 12046,
+                                                "product_id": 258,
+                                                "description": "Fnatic Gear miniSTREAK"
+                                            }
                                         ]
                                     }
                                 ]
@@ -1848,6 +2569,16 @@
                                             "^org\\.pqrs\\.unknownapp\\.conkeror$",
                                             "^com\\.microsoft\\.VSCode"
                                         ]
+                                    },
+                                    {
+                                        "type": "device_exists_if",
+                                        "identifiers": [
+                                            {
+                                                "vendor_id": 12046,
+                                                "product_id": 258,
+                                                "description": "Fnatic Gear miniSTREAK"
+                                            }
+                                        ]
                                     }
                                 ]
                             },
@@ -1911,6 +2642,16 @@
                                             "^org\\.gnu\\.Aquamacs$",
                                             "^org\\.pqrs\\.unknownapp\\.conkeror$",
                                             "^com\\.microsoft\\.VSCode"
+                                        ]
+                                    },
+                                    {
+                                        "type": "device_exists_if",
+                                        "identifiers": [
+                                            {
+                                                "vendor_id": 12046,
+                                                "product_id": 258,
+                                                "description": "Fnatic Gear miniSTREAK"
+                                            }
                                         ]
                                     }
                                 ]
@@ -1983,6 +2724,16 @@
                                             "^org\\.gnu\\.Aquamacs$",
                                             "^org\\.pqrs\\.unknownapp\\.conkeror$"
                                         ]
+                                    },
+                                    {
+                                        "type": "device_exists_if",
+                                        "identifiers": [
+                                            {
+                                                "vendor_id": 12046,
+                                                "product_id": 258,
+                                                "description": "Fnatic Gear miniSTREAK"
+                                            }
+                                        ]
                                     }
                                 ]
                             }
@@ -2054,6 +2805,16 @@
                                             "^org\\.gnu\\.Aquamacs$",
                                             "^org\\.pqrs\\.unknownapp\\.conkeror$"
                                         ]
+                                    },
+                                    {
+                                        "type": "device_exists_if",
+                                        "identifiers": [
+                                            {
+                                                "vendor_id": 12046,
+                                                "product_id": 258,
+                                                "description": "Fnatic Gear miniSTREAK"
+                                            }
+                                        ]
                                     }
                                 ]
                             },
@@ -2120,6 +2881,16 @@
                                             "^org\\.gnu\\.Aquamacs$",
                                             "^org\\.pqrs\\.unknownapp\\.conkeror$",
                                             "^com\\.microsoft\\.VSCode"
+                                        ]
+                                    },
+                                    {
+                                        "type": "device_exists_if",
+                                        "identifiers": [
+                                            {
+                                                "vendor_id": 12046,
+                                                "product_id": 258,
+                                                "description": "Fnatic Gear miniSTREAK"
+                                            }
                                         ]
                                     }
                                 ]
@@ -2192,6 +2963,16 @@
                                             "^org\\.gnu\\.Aquamacs$",
                                             "^org\\.pqrs\\.unknownapp\\.conkeror$"
                                         ]
+                                    },
+                                    {
+                                        "type": "device_exists_if",
+                                        "identifiers": [
+                                            {
+                                                "vendor_id": 12046,
+                                                "product_id": 258,
+                                                "description": "Fnatic Gear miniSTREAK"
+                                            }
+                                        ]
                                     }
                                 ]
                             }
@@ -2263,6 +3044,16 @@
                                             "^org\\.gnu\\.Aquamacs$",
                                             "^org\\.pqrs\\.unknownapp\\.conkeror$"
                                         ]
+                                    },
+                                    {
+                                        "type": "device_exists_if",
+                                        "identifiers": [
+                                            {
+                                                "vendor_id": 12046,
+                                                "product_id": 258,
+                                                "description": "Fnatic Gear miniSTREAK"
+                                            }
+                                        ]
                                     }
                                 ]
                             },
@@ -2329,6 +3120,16 @@
                                             "^org\\.gnu\\.Aquamacs$",
                                             "^org\\.pqrs\\.unknownapp\\.conkeror$"
                                         ]
+                                    },
+                                    {
+                                        "type": "device_exists_if",
+                                        "identifiers": [
+                                            {
+                                                "vendor_id": 12046,
+                                                "product_id": 258,
+                                                "description": "Fnatic Gear miniSTREAK"
+                                            }
+                                        ]
                                     }
                                 ]
                             },
@@ -2394,6 +3195,16 @@
                                             "^org\\.gnu\\.AquamacsEmacs$",
                                             "^org\\.gnu\\.Aquamacs$",
                                             "^org\\.pqrs\\.unknownapp\\.conkeror$"
+                                        ]
+                                    },
+                                    {
+                                        "type": "device_exists_if",
+                                        "identifiers": [
+                                            {
+                                                "vendor_id": 12046,
+                                                "product_id": 258,
+                                                "description": "Fnatic Gear miniSTREAK"
+                                            }
                                         ]
                                     }
                                 ]
@@ -2466,6 +3277,16 @@
                                             "^org\\.gnu\\.Aquamacs$",
                                             "^org\\.pqrs\\.unknownapp\\.conkeror$"
                                         ]
+                                    },
+                                    {
+                                        "type": "device_exists_if",
+                                        "identifiers": [
+                                            {
+                                                "vendor_id": 12046,
+                                                "product_id": 258,
+                                                "description": "Fnatic Gear miniSTREAK"
+                                            }
+                                        ]
                                     }
                                 ]
                             }
@@ -2522,6 +3343,16 @@
                                             "^com\\.parallels\\.winapp\\.",
                                             "^com\\.utmapp\\.UTM$"
                                         ]
+                                    },
+                                    {
+                                        "type": "device_exists_if",
+                                        "identifiers": [
+                                            {
+                                                "vendor_id": 12046,
+                                                "product_id": 258,
+                                                "description": "Fnatic Gear miniSTREAK"
+                                            }
+                                        ]
                                     }
                                 ]
                             }
@@ -2563,6 +3394,16 @@
                                             "^com\\.google\\.Chrome$",
                                             "^com\\.brave\\.Browser$",
                                             "^com\\.apple\\.Safari$"
+                                        ]
+                                    },
+                                    {
+                                        "type": "device_exists_if",
+                                        "identifiers": [
+                                            {
+                                                "vendor_id": 12046,
+                                                "product_id": 258,
+                                                "description": "Fnatic Gear miniSTREAK"
+                                            }
                                         ]
                                     }
                                 ]
@@ -2606,6 +3447,16 @@
                                             "^com\\.brave\\.Browser$",
                                             "^com\\.apple\\.Safari$"
                                         ]
+                                    },
+                                    {
+                                        "type": "device_exists_if",
+                                        "identifiers": [
+                                            {
+                                                "vendor_id": 12046,
+                                                "product_id": 258,
+                                                "description": "Fnatic Gear miniSTREAK"
+                                            }
+                                        ]
                                     }
                                 ]
                             },
@@ -2642,6 +3493,16 @@
                                             "^com\\.google\\.Chrome$",
                                             "^com\\.brave\\.Browser$",
                                             "^com\\.apple\\.Safari$"
+                                        ]
+                                    },
+                                    {
+                                        "type": "device_exists_if",
+                                        "identifiers": [
+                                            {
+                                                "vendor_id": 12046,
+                                                "product_id": 258,
+                                                "description": "Fnatic Gear miniSTREAK"
+                                            }
                                         ]
                                     }
                                 ]
@@ -2685,6 +3546,16 @@
                                             "^com\\.brave\\.Browser$",
                                             "^com\\.apple\\.Safari$"
                                         ]
+                                    },
+                                    {
+                                        "type": "device_exists_if",
+                                        "identifiers": [
+                                            {
+                                                "vendor_id": 12046,
+                                                "product_id": 258,
+                                                "description": "Fnatic Gear miniSTREAK"
+                                            }
+                                        ]
                                     }
                                 ]
                             },
@@ -2721,6 +3592,16 @@
                                             "^com\\.google\\.Chrome$",
                                             "^com\\.brave\\.Browser$",
                                             "^com\\.apple\\.Safari$"
+                                        ]
+                                    },
+                                    {
+                                        "type": "device_exists_if",
+                                        "identifiers": [
+                                            {
+                                                "vendor_id": 12046,
+                                                "product_id": 258,
+                                                "description": "Fnatic Gear miniSTREAK"
+                                            }
                                         ]
                                     }
                                 ]
@@ -2759,6 +3640,16 @@
                                             "^com\\.brave\\.Browser$",
                                             "^com\\.apple\\.Safari$"
                                         ]
+                                    },
+                                    {
+                                        "type": "device_exists_if",
+                                        "identifiers": [
+                                            {
+                                                "vendor_id": 12046,
+                                                "product_id": 258,
+                                                "description": "Fnatic Gear miniSTREAK"
+                                            }
+                                        ]
                                     }
                                 ]
                             },
@@ -2795,6 +3686,16 @@
                                             "^com\\.google\\.Chrome$",
                                             "^com\\.brave\\.Browser$",
                                             "^com\\.apple\\.Safari$"
+                                        ]
+                                    },
+                                    {
+                                        "type": "device_exists_if",
+                                        "identifiers": [
+                                            {
+                                                "vendor_id": 12046,
+                                                "product_id": 258,
+                                                "description": "Fnatic Gear miniSTREAK"
+                                            }
                                         ]
                                     }
                                 ]
@@ -2833,6 +3734,16 @@
                                             "^com\\.brave\\.Browser$",
                                             "^com\\.apple\\.Safari$"
                                         ]
+                                    },
+                                    {
+                                        "type": "device_exists_if",
+                                        "identifiers": [
+                                            {
+                                                "vendor_id": 12046,
+                                                "product_id": 258,
+                                                "description": "Fnatic Gear miniSTREAK"
+                                            }
+                                        ]
                                     }
                                 ]
                             },
@@ -2869,6 +3780,16 @@
                                             "^com\\.google\\.Chrome$",
                                             "^com\\.brave\\.Browser$",
                                             "^com\\.apple\\.Safari$"
+                                        ]
+                                    },
+                                    {
+                                        "type": "device_exists_if",
+                                        "identifiers": [
+                                            {
+                                                "vendor_id": 12046,
+                                                "product_id": 258,
+                                                "description": "Fnatic Gear miniSTREAK"
+                                            }
                                         ]
                                     }
                                 ]
@@ -2941,6 +3862,16 @@
                                             "^org\\.gnu\\.Aquamacs$",
                                             "^org\\.pqrs\\.unknownapp\\.conkeror$"
                                         ]
+                                    },
+                                    {
+                                        "type": "device_exists_if",
+                                        "identifiers": [
+                                            {
+                                                "vendor_id": 12046,
+                                                "product_id": 258,
+                                                "description": "Fnatic Gear miniSTREAK"
+                                            }
+                                        ]
                                     }
                                 ]
                             }
@@ -3007,6 +3938,423 @@
                                             "^org\\.alacritty$",
                                             "^net\\.kovidgoyal\\.kitty$",
                                             "^com\\.mitchellh\\.ghostty$"
+                                        ]
+                                    },
+                                    {
+                                        "type": "device_exists_if",
+                                        "identifiers": [
+                                            {
+                                                "vendor_id": 12046,
+                                                "product_id": 258,
+                                                "description": "Fnatic Gear miniSTREAK"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "description": "Fnatic UK PC keys on the British input source: ` ¬ \\ | # ~ \" @ and AltGr+4 € type as printed",
+                        "manipulators": [
+                            {
+                                "type": "basic",
+                                "from": {
+                                    "key_code": "grave_accent_and_tilde",
+                                    "modifiers": {
+                                        "mandatory": [
+                                            "shift"
+                                        ],
+                                        "optional": [
+                                            "caps_lock"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "l",
+                                        "modifiers": [
+                                            "left_option"
+                                        ]
+                                    }
+                                ],
+                                "conditions": [
+                                    {
+                                        "type": "device_if",
+                                        "identifiers": [
+                                            {
+                                                "vendor_id": 12046,
+                                                "product_id": 258,
+                                                "description": "Fnatic Gear miniSTREAK"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "type": "input_source_if",
+                                        "input_sources": [
+                                            {
+                                                "input_source_id": "^com\\.apple\\.keylayout\\.British$"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "basic",
+                                "from": {
+                                    "key_code": "grave_accent_and_tilde",
+                                    "modifiers": {
+                                        "optional": [
+                                            "any"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "non_us_backslash"
+                                    }
+                                ],
+                                "conditions": [
+                                    {
+                                        "type": "device_if",
+                                        "identifiers": [
+                                            {
+                                                "vendor_id": 12046,
+                                                "product_id": 258,
+                                                "description": "Fnatic Gear miniSTREAK"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "type": "input_source_if",
+                                        "input_sources": [
+                                            {
+                                                "input_source_id": "^com\\.apple\\.keylayout\\.British$"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "basic",
+                                "from": {
+                                    "key_code": "non_us_backslash",
+                                    "modifiers": {
+                                        "optional": [
+                                            "any"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "backslash"
+                                    }
+                                ],
+                                "conditions": [
+                                    {
+                                        "type": "device_if",
+                                        "identifiers": [
+                                            {
+                                                "vendor_id": 12046,
+                                                "product_id": 258,
+                                                "description": "Fnatic Gear miniSTREAK"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "type": "input_source_if",
+                                        "input_sources": [
+                                            {
+                                                "input_source_id": "^com\\.apple\\.keylayout\\.British$"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "basic",
+                                "from": {
+                                    "key_code": "non_us_pound",
+                                    "modifiers": {
+                                        "mandatory": [
+                                            "shift"
+                                        ],
+                                        "optional": [
+                                            "caps_lock"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "non_us_backslash",
+                                        "modifiers": [
+                                            "left_shift"
+                                        ]
+                                    }
+                                ],
+                                "conditions": [
+                                    {
+                                        "type": "device_if",
+                                        "identifiers": [
+                                            {
+                                                "vendor_id": 12046,
+                                                "product_id": 258,
+                                                "description": "Fnatic Gear miniSTREAK"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "type": "input_source_if",
+                                        "input_sources": [
+                                            {
+                                                "input_source_id": "^com\\.apple\\.keylayout\\.British$"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "basic",
+                                "from": {
+                                    "key_code": "non_us_pound",
+                                    "modifiers": {
+                                        "optional": [
+                                            "caps_lock"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "3",
+                                        "modifiers": [
+                                            "left_option"
+                                        ]
+                                    }
+                                ],
+                                "conditions": [
+                                    {
+                                        "type": "device_if",
+                                        "identifiers": [
+                                            {
+                                                "vendor_id": 12046,
+                                                "product_id": 258,
+                                                "description": "Fnatic Gear miniSTREAK"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "type": "input_source_if",
+                                        "input_sources": [
+                                            {
+                                                "input_source_id": "^com\\.apple\\.keylayout\\.British$"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "basic",
+                                "from": {
+                                    "key_code": "backslash",
+                                    "modifiers": {
+                                        "mandatory": [
+                                            "shift"
+                                        ],
+                                        "optional": [
+                                            "caps_lock"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "non_us_backslash",
+                                        "modifiers": [
+                                            "left_shift"
+                                        ]
+                                    }
+                                ],
+                                "conditions": [
+                                    {
+                                        "type": "device_if",
+                                        "identifiers": [
+                                            {
+                                                "vendor_id": 12046,
+                                                "product_id": 258,
+                                                "description": "Fnatic Gear miniSTREAK"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "type": "input_source_if",
+                                        "input_sources": [
+                                            {
+                                                "input_source_id": "^com\\.apple\\.keylayout\\.British$"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "basic",
+                                "from": {
+                                    "key_code": "backslash",
+                                    "modifiers": {
+                                        "optional": [
+                                            "caps_lock"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "3",
+                                        "modifiers": [
+                                            "left_option"
+                                        ]
+                                    }
+                                ],
+                                "conditions": [
+                                    {
+                                        "type": "device_if",
+                                        "identifiers": [
+                                            {
+                                                "vendor_id": 12046,
+                                                "product_id": 258,
+                                                "description": "Fnatic Gear miniSTREAK"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "type": "input_source_if",
+                                        "input_sources": [
+                                            {
+                                                "input_source_id": "^com\\.apple\\.keylayout\\.British$"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "basic",
+                                "from": {
+                                    "key_code": "2",
+                                    "modifiers": {
+                                        "mandatory": [
+                                            "shift"
+                                        ],
+                                        "optional": [
+                                            "caps_lock"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "quote",
+                                        "modifiers": [
+                                            "left_shift"
+                                        ]
+                                    }
+                                ],
+                                "conditions": [
+                                    {
+                                        "type": "device_if",
+                                        "identifiers": [
+                                            {
+                                                "vendor_id": 12046,
+                                                "product_id": 258,
+                                                "description": "Fnatic Gear miniSTREAK"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "type": "input_source_if",
+                                        "input_sources": [
+                                            {
+                                                "input_source_id": "^com\\.apple\\.keylayout\\.British$"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "basic",
+                                "from": {
+                                    "key_code": "quote",
+                                    "modifiers": {
+                                        "mandatory": [
+                                            "shift"
+                                        ],
+                                        "optional": [
+                                            "caps_lock"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "2",
+                                        "modifiers": [
+                                            "left_shift"
+                                        ]
+                                    }
+                                ],
+                                "conditions": [
+                                    {
+                                        "type": "device_if",
+                                        "identifiers": [
+                                            {
+                                                "vendor_id": 12046,
+                                                "product_id": 258,
+                                                "description": "Fnatic Gear miniSTREAK"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "type": "input_source_if",
+                                        "input_sources": [
+                                            {
+                                                "input_source_id": "^com\\.apple\\.keylayout\\.British$"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "basic",
+                                "from": {
+                                    "key_code": "4",
+                                    "modifiers": {
+                                        "mandatory": [
+                                            "option"
+                                        ],
+                                        "optional": [
+                                            "caps_lock"
+                                        ]
+                                    }
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "2",
+                                        "modifiers": [
+                                            "left_option"
+                                        ]
+                                    }
+                                ],
+                                "conditions": [
+                                    {
+                                        "type": "device_if",
+                                        "identifiers": [
+                                            {
+                                                "vendor_id": 12046,
+                                                "product_id": 258,
+                                                "description": "Fnatic Gear miniSTREAK"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "type": "input_source_if",
+                                        "input_sources": [
+                                            {
+                                                "input_source_id": "^com\\.apple\\.keylayout\\.British$"
+                                            }
                                         ]
                                     }
                                 ]
