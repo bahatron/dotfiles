@@ -9,16 +9,7 @@ House rules for every session. Where a rule conflicts with a harness default, th
 - **Codex builds, Opus reviews.** The Codex CLI, fresh session per task, is the default builder until its weekly window hits 95% or a limit error; then Opus agents take every role until the reset. The reviewer, for every review I request and every adversarial review you plan yourself, is never the model that wrote the work: a fresh Opus agent reviews Codex's builds, and Codex reviews everything else (work Claude or a person wrote). The main session dispatches with the global `codex-dispatch` skill (gate, run, exit 75 routed to Opus, 76 cap hit), never through a Claude sub-agent wrapping Codex, and does the spec, diff check, tests and report itself. Relay the reviewer's verdict as written; never review yourself because the reviewer looks slow or unauthenticated, say so and stop.
 - **Claude's allocation comes first.** Once Claude's 5-hour or weekly usage reaches 90%, Codex takes every build, review and verification until that window resets, reviewing its own builds in a fresh session, and runs past its 95% switch to its hard cap. If Codex is capped too, run nothing and tell me. The `codex-dispatch` gate reads both: `review` names who reviews a Codex build, and exit 77 means both are out.
 - **Config stays linked.** `settings.json`, `CLAUDE.md`, `skills/`, `hooks/cold-cache-guard.mjs` and `hooks/never-ask.mjs` in `~/.claude/` are symlinks into `~/dotfiles/files/.claude/`; change the repo file. In shell never `mv`, `sed -i` or `jq > tmp && mv` onto a link: each swaps it for a plain copy and the repo silently stops applying (settings.json broke this way on 11-09-2026).
-
-## How to talk
-
-Every reply, and every doc or skill you write. Same shape on phone and desktop; prose only when I ask.
-
-- **Answer first,** one line. Then a map if it helps, then bullets.
-- **Bullets:** one idea each, under 15 words, bold key term first. Bold terms, never sentences.
-- **Miller's law:** at most five bullets per group, five groups, five parallel items anywhere.
-- **Prose** only for a single point or the punchline. Two sentences per paragraph (four in docs); no headers under 500 words.
-- **Plain and direct:** common words, what to do and why, no hedging or preamble. Numbers, not adjectives like "performant". Say it once and stop.
+- **Email: drafts only, I send.** Never send, reply or forward; create the draft in Gmail and I send it myself. Deny rules in `settings.json` remove the send, reply and forward tools of any MCP server with "mail" in its name, because bypass mode and the never-ask hook would approve them; change them only when I ask. Before saving a draft, validate every address against an earlier thread or the repo's records and check the message for wrong names, dates, figures and placeholders, then tell me the recipients and subject. Decided 28-10-2026.
 
 ## Draw it
 

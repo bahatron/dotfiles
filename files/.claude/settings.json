@@ -1,6 +1,5 @@
 {
   "env": {
-    "CLAUDE_CODE_EFFORT_LEVEL": "max",
     "CLAUDE_CODE_PLUGIN_DIRS": "~/dotfiles/files/.claude/mods/cold-cache-guard"
   },
   "permissions": {
@@ -10,6 +9,11 @@
       "Bash(npx *)",
       "Bash(node *)",
       "Bash(git worktree *)"
+    ],
+    "deny": [
+      "mcp__*mail*__*send*",
+      "mcp__*mail*__*forward*",
+      "mcp__*mail*__*reply*"
     ],
     "defaultMode": "bypassPermissions"
   },
@@ -106,7 +110,7 @@
       "maxEffortLevel": "low"
     },
     "claude-opus-5-5": {
-      "effortLevel": "xhigh"
+      "effortLevel": "medium"
     }
   },
   "tui": "fullscreen",
