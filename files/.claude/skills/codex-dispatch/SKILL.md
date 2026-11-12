@@ -80,9 +80,19 @@ preparing to dispatch, route on that reading, done.
 node ~/.claude/skills/codex-dispatch/dispatch.mjs run --label <name> \
   --prompt <scratch>/<name>-prompt.txt --out <scratch>/<name>-out.md \
   --sandbox <read-only|workspace-write|danger-full-access> \
-  [--schema <scratch>/<name>-schema.json] [--timeout-s 900] [--cwd <repo>]
+  [--schema <scratch>/<name>-schema.json] [--timeout-s 900] [--cwd <repo>] \
+  [--effort ultra] [--tier fast]
 ```
 
+- **Fast mode is opt-in per run**: `--tier fast` passes `-c service_tier`, which
+  Codex records as the `priority` tier ("Fast: 2x speed, increased usage"). Use
+  it only for work Simon wants finished sooner; the config's tier applies
+  otherwise.
+
+- **Effort is pinned per run** (Simon's rule, 11-11-2026): every run passes
+  `-c model_reasoning_effort` with `--effort`, default `ultra`, so a change to
+  `~/.codex/config.toml` (the Codex app and extension save the effort picked
+  there) never lowers a dispatched run.
 - **Runs the gate first** unless `--force-codex`; nothing runs on exit 75
   (routed to Opus) or exit 77 (`stop`: Codex capped, Claude at 90%).
 - **Exit 76** means Codex hit its cap mid-run (no output, and limit text in the

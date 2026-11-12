@@ -12,6 +12,7 @@ import { join } from "node:path";
 
 const DEFAULT_THRESHOLD = 95;
 const DEFAULT_CLAUDE_THRESHOLD = 90;
+const DEFAULT_EFFORT = "ultra";
 const EXIT_ROUTED_TO_OPUS = 75;
 const EXIT_LIMIT_HIT = 76;
 const EXIT_ROUTED_TO_STOP = 77;
@@ -273,6 +274,8 @@ async function run(opts) {
     let args = ["exec", "-s", opts.sandbox, "-C", cwd, "-o", opts.out];
     if (opts.schema) args.push("--output-schema", opts.schema);
     if (opts.model) args.push("-m", opts.model);
+    args.push("-c", `model_reasoning_effort="${opts.effort ?? DEFAULT_EFFORT}"`);
+    if (opts.tier) args.push("-c", `service_tier="${opts.tier}"`);
     // Codex refuses to run outside a git repository unless told to; folders of
     // plain documents (bauer/) are not repositories.
     let inRepo = spawnSync("git", ["-C", cwd, "rev-parse", "--is-inside-work-tree"], { encoding: "utf8" }).status === 0;
@@ -329,5 +332,5 @@ if (cmd === "quota") emit(await quota(
 else if (cmd === "run") await run(opts);
 else
     fail(
-        "usage: dispatch.mjs quota [--threshold N] [--claude-threshold N] | run --prompt FILE --sandbox MODE --out FILE [--schema FILE] [--label NAME] [--cwd DIR] [--timeout-s N] [--model M] [--threshold N] [--claude-threshold N] [--force-codex]",
+        "usage: dispatch.mjs quota [--threshold N] [--claude-threshold N] | run --prompt FILE --sandbox MODE --out FILE [--schema FILE] [--label NAME] [--cwd DIR] [--timeout-s N] [--model M] [--effort E] [--tier T] [--threshold N] [--claude-threshold N] [--force-codex]",
     );
