@@ -1,7 +1,7 @@
 ---
 name: assistant
 description: >
-  Fast voice assistant on Haiku 5.5 over the chat skill. Answer at once;
+  Fast voice assistant on Fable 5.2 at low effort over the chat skill. Answer at once;
   every task runs in a background Opus worker and returns spoken and written.
   Triggers: "assistant mode", "be my assistant", "be on assistant mode", "/assistant".
   Stay active until "stop assistant mode", "back to normal", or a chat stop phrase.
@@ -16,7 +16,7 @@ Three doors each turn: answer, one read, or delegate. Nothing else.
 ## Enter
 Invoke the Skill tool with `chat`; follow its spoken style. This skill's detached speak replaces chat's blocking pattern.
 Run `mkdir -p <scratchpad> && touch <scratchpad>/assistant-mode` with the scratchpad directory path from the system prompt written in full; shell variables do not survive between Bash calls. This arms the hooks.
-If the system prompt does not name Haiku 5.5, say once, spoken and written: "Pick Haiku 5.5 in the VS Code model picker or run /model haiku." Carry on anyway.
+If the system prompt does not name Fable 5.2, say once, spoken and written: "Pick Fable 5.2 in the VS Code model picker or run /model fable, then /effort low." Otherwise say once: "Run /effort low if you haven't." Carry on anyway.
 Greet in one speech; include any model reminder in it.
 
 ## Three doors
@@ -85,7 +85,9 @@ flowchart TB
 ```
 
 ## Simon's decisions
-Simon's rule, 26-10-2026: Haiku 5.5 (`haiku`) is the main-loop model; cold-start low-effort two-sentence replies took Haiku 1.3-2.0 s, Sonnet 1.8-2.4 s, Opus 2.2-4.6 s. About 250 words took Haiku 3.7-4.9 s, Sonnet 8.9-10.0 s, Opus 11.2-18.2 s (Claude Code 2.1.310).
+Simon's rule, 12-11-2026: Fable 5.2 (`fable`) at low effort is the main-loop model, replacing Haiku 5.5. No `modelSettings` cap on Fable, because a cap would also hold every other Fable session at low; low comes from this skill's `effort: low` and Simon running `/effort low`. Open risk: the 27-10 test showed the global `CLAUDE_CODE_EFFORT_LEVEL=max` beat skill-level effort on Haiku, so Fable may think longer than intended.
+
+Superseded 12-11-2026. Simon's rule, 26-10-2026: Haiku 5.5 (`haiku`) is the main-loop model; cold-start low-effort two-sentence replies took Haiku 1.3-2.0 s, Sonnet 1.8-2.4 s, Opus 2.2-4.6 s. About 250 words took Haiku 3.7-4.9 s, Sonnet 8.9-10.0 s, Opus 11.2-18.2 s (Claude Code 2.1.310).
 
 Simon's rule, 27-10-2026: Simon switches the model himself; the skill never sets `model`.
 
@@ -93,7 +95,7 @@ Simon's rule, 27-10-2026: settings keep `CLAUDE_CODE_EFFORT_LEVEL=max` and cap H
 
 Simon's rule, 27-10-2026: every ask needing work goes to one background Opus worker; the main loop answers at once and yields. A one-read answer gets a background double-check.
 
-Simon's rule, 27-10-2026: a code request goes to the Opus worker, which writes the spec and runs Codex through `codex-dispatch`; the main loop never launches Codex. No conflict with the 17-10-2026 rule in CLAUDE.md and `codex-dispatch`: there Simon talks to an Opus session that sends work to Codex; here he talks to the Haiku front, which uploads the request to Opus, which uses Codex. Same shape, one layer down; both docs stay unchanged.
+Simon's rule, 27-10-2026: a code request goes to the Opus worker, which writes the spec and runs Codex through `codex-dispatch`; the main loop never launches Codex. No conflict with the 17-10-2026 rule in CLAUDE.md and `codex-dispatch`: there Simon talks to an Opus session that sends work to Codex; here he talks to the Fable front, which uploads the request to Opus, which uses Codex. Same shape, one layer down; both docs stay unchanged.
 
 Simon's rule, 27-10-2026: hooks enforce Opus workers, no main-loop edits or Codex, every reply spoken unless muted, and mode re-armed after compaction.
 

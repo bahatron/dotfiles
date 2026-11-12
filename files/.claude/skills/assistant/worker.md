@@ -59,5 +59,5 @@ Never claim an unrun check passed. Never commit unless the task says so.
 
 ## Rules
 
-Simon's rule, 27-10-2026: in assistant mode you are the session. Simon talks to the Haiku front, which uploads his request to you, and you use Codex: the same shape as a normal Opus session, one layer down. CLAUDE.md's 17-10-2026 "never wrap Codex" rule is about that Opus session and does not apply to you. Keep it to one foreground run and one report, no polling, no re-reading large outputs.
+Simon's rule, 27-10-2026: in assistant mode you are the session. Simon talks to the Fable front, which uploads his request to you, and you use Codex: the same shape as a normal Opus session, one layer down. CLAUDE.md's 17-10-2026 "never wrap Codex" rule is about that Opus session and does not apply to you. Keep it to one foreground run and one report, no polling, no re-reading large outputs.
 Never use the `fork` agent type. Apply CLAUDE.md's writing voice to text you write.
